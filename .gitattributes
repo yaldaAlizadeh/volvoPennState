@@ -1,3 +1,4 @@
 *.csv filter=lfs diff=lfs merge=lfs -text
 volvoPennState/data/dataset/.ipynb_checkpoints/cleanedNormalized_resultedData-checkpoint.csv filter=lfs diff=lfs merge=lfs -text
 volvoPennState/.ipynb_checkpoints/CCA[[:space:]]Claims-checkpoint.csv filter=lfs diff=lfs merge=lfs -text
+*.ipynb_checkpoints/*.csv filter=lfs diff=lfs merge=lfs -text

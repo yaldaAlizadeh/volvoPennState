@@ -1,0 +1,86 @@
+Traceback (most recent call last):
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/bin/jupyter-nbconvert", line 7, in <module>
+    from nbconvert.nbconvertapp import main
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/nbconvert/__init__.py", line 4, in <module>
+    from .exporters import *
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/nbconvert/exporters/__init__.py", line 3, in <module>
+    from .html import HTMLExporter
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/nbconvert/exporters/html.py", line 14, in <module>
+    from jinja2 import contextfilter
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/__init__.py", line 12, in <module>
+    from .environment import Environment
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/environment.py", line 25, in <module>
+    from .defaults import BLOCK_END_STRING
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/defaults.py", line 3, in <module>
+    from .filters import FILTERS as DEFAULT_FILTERS  # noqa: F401
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/filters.py", line 13, in <module>
+    from markupsafe import soft_unicode
+ImportError: cannot import name 'soft_unicode' from 'markupsafe' (/storage/home/yqf5148/.local/lib/python3.8/site-packages/markupsafe/__init__.py)
+ps: /storage/icds/RISE/sw8/anaconda/anaconda3/envs/tensorflow/lib/libuuid.so.1: no version information available (required by /usr/lib64/libblkid.so.1)
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+25/03/14 02:40:27 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4042. Attempting port 4043.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4043. Attempting port 4044.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4044. Attempting port 4045.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4045. Attempting port 4046.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4046. Attempting port 4047.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4047. Attempting port 4048.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4048. Attempting port 4049.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4049. Attempting port 4050.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4050. Attempting port 4051.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4051. Attempting port 4052.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4052. Attempting port 4053.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4053. Attempting port 4054.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4054. Attempting port 4055.
+25/03/14 02:40:28 WARN Utils: Service 'SparkUI' could not bind on port 4055. Attempting port 4056.
+25/03/14 02:40:28 ERROR SparkUI: Failed to bind SparkUI
+java.net.BindException: Failed to bind to /0.0.0.0:4056: Service 'SparkUI' failed after 16 retries (starting from 4040)! Consider explicitly setting the appropriate port for the service 'SparkUI' (for example spark.ui.port for SparkUI) to an available port or increasing spark.port.maxRetries.
+	at org.sparkproject.jetty.server.ServerConnector.openAcceptChannel(ServerConnector.java:349)
+	at org.sparkproject.jetty.server.ServerConnector.open(ServerConnector.java:310)
+	at org.sparkproject.jetty.server.AbstractNetworkConnector.doStart(AbstractNetworkConnector.java:80)
+	at org.sparkproject.jetty.server.ServerConnector.doStart(ServerConnector.java:234)
+	at org.sparkproject.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:73)
+	at org.apache.spark.ui.JettyUtils$.newConnector$1(JettyUtils.scala:304)
+	at org.apache.spark.ui.JettyUtils$.httpConnect$1(JettyUtils.scala:341)
+	at org.apache.spark.ui.JettyUtils$.$anonfun$startJettyServer$8(JettyUtils.scala:344)
+	at org.apache.spark.ui.JettyUtils$.$anonfun$startJettyServer$8$adapted(JettyUtils.scala:344)
+	at org.apache.spark.util.Utils$.$anonfun$startServiceOnPort$2(Utils.scala:2256)
+	at scala.collection.immutable.Range.foreach$mVc$sp(Range.scala:158)
+	at org.apache.spark.util.Utils$.startServiceOnPort(Utils.scala:2248)
+	at org.apache.spark.ui.JettyUtils$.startJettyServer(JettyUtils.scala:345)
+	at org.apache.spark.ui.WebUI.initServer(WebUI.scala:145)
+	at org.apache.spark.ui.SparkUI.bind(SparkUI.scala:145)
+	at org.apache.spark.SparkContext.$anonfun$new$14(SparkContext.scala:511)
+	at org.apache.spark.SparkContext.$anonfun$new$14$adapted(SparkContext.scala:511)
+	at scala.Option.foreach(Option.scala:407)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:511)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:58)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:247)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+	at py4j.Gateway.invoke(Gateway.java:238)
+	at py4j.commands.ConstructorCommand.invokeConstructor(ConstructorCommand.java:80)
+	at py4j.commands.ConstructorCommand.execute(ConstructorCommand.java:69)
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+ERROR:root:Exception while sending command.
+Traceback (most recent call last):
+  File "/storage/home/yqf5148/.local/lib/python3.8/site-packages/py4j/clientserver.py", line 516, in send_command
+    raise Py4JNetworkError("Answer from Java side is empty")
+py4j.protocol.Py4JNetworkError: Answer from Java side is empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/storage/home/yqf5148/.local/lib/python3.8/site-packages/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+  File "/storage/home/yqf5148/.local/lib/python3.8/site-packages/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving

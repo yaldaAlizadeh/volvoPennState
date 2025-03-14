@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/bin/jupyter-nbconvert", line 7, in <module>
+    from nbconvert.nbconvertapp import main
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/nbconvert/__init__.py", line 4, in <module>
+    from .exporters import *
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/nbconvert/exporters/__init__.py", line 3, in <module>
+    from .html import HTMLExporter
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/nbconvert/exporters/html.py", line 14, in <module>
+    from jinja2 import contextfilter
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/__init__.py", line 12, in <module>
+    from .environment import Environment
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/environment.py", line 25, in <module>
+    from .defaults import BLOCK_END_STRING
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/defaults.py", line 3, in <module>
+    from .filters import FILTERS as DEFAULT_FILTERS  # noqa: F401
+  File "/swst/apps/anaconda3/2021.05_gcc-8.5.0/lib/python3.8/site-packages/jinja2/filters.py", line 13, in <module>
+    from markupsafe import soft_unicode
+ImportError: cannot import name 'soft_unicode' from 'markupsafe' (/storage/home/yqf5148/.local/lib/python3.8/site-packages/markupsafe/__init__.py)
+ps: /storage/icds/RISE/sw8/anaconda/anaconda3/envs/tensorflow/lib/libuuid.so.1: no version information available (required by /usr/lib64/libblkid.so.1)
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+25/03/14 01:53:17 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/03/14 01:53:19 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+25/03/14 01:53:19 WARN Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
+25/03/14 01:53:19 WARN Utils: Service 'SparkUI' could not bind on port 4042. Attempting port 4043.
+25/03/14 01:53:19 WARN Utils: Service 'SparkUI' could not bind on port 4043. Attempting port 4044.
+25/03/14 01:53:19 WARN Utils: Service 'SparkUI' could not bind on port 4044. Attempting port 4045.
+25/03/14 01:53:19 WARN Utils: Service 'SparkUI' could not bind on port 4045. Attempting port 4046.
+25/03/14 01:53:19 WARN Utils: Service 'SparkUI' could not bind on port 4046. Attempting port 4047.
+[Stage 0:>                                                          (0 + 1) / 1]                                                                                [Stage 5:>                                                          (0 + 1) / 1]                                                                                [Stage 8:>                                                          (0 + 1) / 1]                                                                                [Stage 11:>                                                         (0 + 1) / 1]                                                                                [Stage 29:>                                                         (0 + 1) / 1]                                                                                [Stage 32:>                                                         (0 + 1) / 1]                                                                                [Stage 1691:>                                                       (0 + 1) / 1]                                                                                slurmstepd: error: *** JOB 34986915 ON p-sc-2049 CANCELLED AT 2025-03-14T02:03:18 ***

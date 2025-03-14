@@ -1,0 +1,18 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=10:stmem
+#PBS -l feature=rhel7 
+#PBS -l pmem=25gb 
+#PBS -l walltime=40:00:00                # Wall time.
+#PBS -N open_allocation                 # Job name.
+#PBS -A open
+#PBS -o outputFileName                   # Output file.
+#PBS -e errorFileName                    # Output error info.
+
+conda activate pyspark
+
+cd $PBS_O_WORKDIR                         # aciRun.pbs dir.
+cd ../                                    # Case dir.
+echo "Starting at"                        # Output starting time info.
+date
+
+python DataGenerator_test.py

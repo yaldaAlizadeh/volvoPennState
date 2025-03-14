@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[1]:
 
 
 get_ipython().run_line_magic('env', 'JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-2.el8.x86_64')
 get_ipython().run_line_magic('env', 'PATH=/storage/home/yqf5148/work/anaconda3/envs/volvopennstate-env/bin:storage/icds/swst/deployed/production/20220813/apps/anaconda3/2021.05_gcc-8.5.0/bin:/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-2.el8.x86_64/bin/java:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin')
 
 
-# In[5]:
+# In[2]:
 
 
 import findspark
@@ -58,10 +58,17 @@ sc = SparkContext(conf=conf)
 # Create SparkSession 
 spark = SparkSession.builder        .master("local[2]")        .appName("test")        .config("spark.driver.maxResultSize", "20g")       .config("spark.driver.memory", "100g")       .getOrCreate()
 
-spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")    #To resolve the error for p1075_38 to_timestamp formating: You may get a different result due to the upgrading to Spark >= 3.0: Fail to parse '1/2/2019 20:40:00' in the new parser. You can set spark.sql.legacy.timeParserPolicy to LEGACY to restore the behavior before Spark 3.0, or set to CORRECTED and treat it as an invalid datetime string.
+#both works
+# 1: 
+# spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")    #To resolve the error for p1075_38 to_timestamp formating: You may get a different result due to the upgrading to Spark >= 3.0: Fail to parse '1/2/2019 20:40:00' in the new parser. You can set spark.sql.legacy.timeParserPolicy to LEGACY to restore the behavior before Spark 3.0, or set to CORRECTED and treat it as an invalid datetime string.
+# Set Spark SQL legacy time parser policy to LEGACY to handle older date formats
+# 2:
+spark.conf.set("spark.sql.legacy.timeParserPolicy", "LEGACY")
+# Increase the max fields in the string representation of a plan
+spark.conf.set("spark.sql.debug.maxToStringFields", 1000)  # Increase to 1000 or more as needed
 
 
-# In[6]:
+# In[3]:
 
 
 def raw_data_cleaning(dtc_type):
@@ -70,7 +77,7 @@ def raw_data_cleaning(dtc_type):
     
 
 
-# In[7]:
+# In[4]:
 
 
 # Read CSV file into table
@@ -116,7 +123,7 @@ spark.read.option("header",True)           .csv("/storage/home/yqf5148/work/volv
 spark.read.option("header",True,)           .csv("/storage/home/yqf5148/work/volvoPennState/P2457_faults.csv")           .createOrReplaceTempView("p2457_faults")
 
 
-# In[8]:
+# In[5]:
 
 
 df_population = spark.sql("SELECT * FROM population")
@@ -138,7 +145,7 @@ df_p0401 = raw_data_cleaning('p0401_faults')
 df_p2457 = raw_data_cleaning('p2457_faults')
 
 
-# In[9]:
+# In[6]:
 
 
 # df38 = spark.read.option("header",True).csv("P1075_38.csv")
@@ -151,7 +158,7 @@ df_p2457 = raw_data_cleaning('p2457_faults')
 # df2457 = spark.read.option("header",True).csv("P2457_faults.csv")
 
 
-# In[10]:
+# In[7]:
 
 
 # dtc_type="p1075_38"    
@@ -162,7 +169,7 @@ df_p2457 = raw_data_cleaning('p2457_faults')
 # df75.select("VIN", f.to_timestamp(f.col("FAULT_DATE_TIME"), "yyyy-MM-dd HH:mm:ss"), "FAULT_STATUS").show()
 
 
-# In[11]:
+# In[8]:
 
 
 headerList = ["VIN",    
@@ -313,7 +320,7 @@ headerList = ["VIN",
           "if_parts_replaced_in_2nd_15d"]
 
 
-# In[ ]:
+# In[9]:
 
 
 def fix_problem_of_fault_date_time_with_no_seconds(df, dtc_type):
@@ -321,16 +328,6 @@ def fix_problem_of_fault_date_time_with_no_seconds(df, dtc_type):
        return f.to_timestamp(f.concat(df.FAULT_DATE_TIME, lit(":00")), "M/d/yyyy HH:mm:ss")
     else:
        return f.to_timestamp(df.FAULT_DATE_TIME, "yyyy-MM-dd HH:mm:ss")
-
-
-def partIsReplacedForVINs(df_claims, start_date_str, end_date_str, previous_15day_duration_start_date_str, previous_15day_duration_end_date_str):
-    df_temp_1 = df_claims.filter((f.col('CLAIM_REG_DATE') > end_date_str) & (f.col('CLAIM_REG_DATE') < start_date_str) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))                                          .withColumn('part_replacement',f.lit('first_15_days_back'))
-    df_temp_2 = df_claims.filter((f.col('CLAIM_REG_DATE') > previous_15day_duration_end_date_str) & (f.col('CLAIM_REG_DATE') < previous_15day_duration_start_date_str) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))                                          .withColumn('part_replacement',f.lit('another_15_days_before_first_15d'))
-    
-    df_temp = df_temp_1.unionByName(df_temp_2)
-    
-    df_part_repl = df_temp.groupBy('VIN').pivot('part_replacement',['first_15_days_back','another_15_days_before_first_15d']).count().fillna(0)
-    return df_part_repl
 
 
 def feature_1_or_2_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN, dtc_status_to_calculate_this_feature):
@@ -452,30 +449,59 @@ def feature_7_or_8_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this
              
     return df_dtc_type_and_status_for_this_VIN.count()
 
-    
-  
+
+
 def if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, start_date, end_date):
-    fault_date_time_format='M/d/yyyy'
-    df_cca_claims = spark.sql("select * from cca_claims where cca_claims.VIN = '{}' ".format(thisVIN))
-    df_egr_cooler_claims = spark.sql("select * from egr_cooler_claims where egr_cooler_claims.VIN = '{}' ".format(thisVIN))
-    df_egr_fg_293_claims = spark.sql("select * from egr_fg_293_claims where egr_fg_293_claims.VIN = '{}' ".format(thisVIN))
-    df_egr_sensors_claims = spark.sql("select * from egr_sensors where egr_sensors.VIN = '{}' ".format(thisVIN))
 
-    df_cca_claims_part_replacements = df_cca_claims.filter((f.col('CLAIM_REG_DATE') > start_date) & (f.col('CLAIM_REG_DATE') < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
+    # Initialize an empty list to store the results
+    replacement_records = []
 
-    df_egr_cooler_claims_part_replacements = df_egr_cooler_claims.filter((f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format)> start_date) & (f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format) < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
+    fault_date_time_format = 'MM/dd/yyyy'
+    start_date = '2014-12-31'
+    end_date = '2021-12-31'
 
-    df_egr_fg_293_claims_part_replacements = df_egr_fg_293_claims.filter((f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format)> start_date) & (f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format) < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
-        
-    df_egr_sensors_claims_part_replacements = df_egr_sensors_claims.filter((f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format)> start_date) & (f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format) < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
+    # Load all claims tables for the specific VIN
+    claims_datasets = {
+        'cca_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM cca_claims WHERE VIN = '{thisVIN}'",
+        'egr_cooler_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM egr_cooler_claims WHERE VIN = '{thisVIN}'",
+        'egr_fg_293_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM egr_fg_293_claims WHERE VIN = '{thisVIN}'",
+        'egr_sensors_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM egr_sensors WHERE VIN = '{thisVIN}'"
+    }
 
-    
-    number_of_parts_replaced_for_thisVIN = df_cca_claims_part_replacements.count() + df_egr_cooler_claims_part_replacements.count() + df_egr_fg_293_claims_part_replacements.count() + df_egr_sensors_claims_part_replacements.count()
-    
-    if number_of_parts_replaced_for_thisVIN > 0:
-        return 1
-    else:
-        return 0
+    # Define filtering condition with corrected date format
+    for dataset_name, query in claims_datasets.items():
+        try:
+            df_claims = spark.sql(query)
+
+            if df_claims is not None and df_claims.count() > 0:
+
+                # df_claims.printSchema()  # Debugging step
+                # df_claims.show(5, truncate=False)  # Show sample data
+
+                df_claims = df_claims.withColumn("CLAIM_REG_DATE", f.to_date(f.col("CLAIM_REG_DATE"), "MM/dd/yyyy"))
+
+                # Try alternative filtering
+                df_filtered = df_claims.filter(
+                    (f.col('CLAIM_REG_DATE') >= f.to_date(f.lit(start_date), "yyyy-MM-dd")) &
+                    (f.col('CLAIM_REG_DATE') <= f.to_date(f.lit(end_date), "yyyy-MM-dd")) &
+                    (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0)
+                )
+
+                # df_filtered.show(5, truncate=False)  # Show filtered data
+
+                if df_filtered is not None and df_filtered.count() > 0:
+                    for row in df_filtered.collect():
+                        replacement_records.append([thisVIN, dataset_name, row['CLAIM_REG_DATE'], row['TOT_CLAIM_PAYMENT_USD']])
+
+        except AnalysisException as e:
+            print(f"Error processing dataset {dataset_name} for VIN {thisVIN}: {e}")
+
+
+        if replacement_records:
+            return 1
+        else:
+            return 0
+
 
 
   
@@ -773,7 +799,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     return
 
 
-# In[ ]:
+# In[10]:
 
 
 # Loop through the arguments and print them

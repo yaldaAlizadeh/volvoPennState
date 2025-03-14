@@ -1,0 +1,50 @@
+starting to run CalculateFeaturesForThisVIN for job id=34990849
+the VIN for this Job is:  4V4NC9EH9GN964615
+[22;0t]0;IPython: yqf5148/volvoPennStateenv: JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-2.el8.x86_64
+env: PATH=/storage/home/yqf5148/work/anaconda3/envs/volvopennstate-env/bin:storage/icds/swst/deployed/production/20220813/apps/anaconda3/2021.05_gcc-8.5.0/bin:/usr/lib/jvm/java-11-openjdk-11.0.25.0.9-2.el8.x86_64/bin/java:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin:/storage/icds/tools/bin:/storage/sys/slurm/bin
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mPy4JError[0m                                 Traceback (most recent call last)
+[0;32m~/work/volvoPennState/CalculateFeaturesForThisVIN.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     51[0m [0;34m[0m[0m
+[1;32m     52[0m [0;31m# Create new context[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 53[0;31m [0msc[0m [0;34m=[0m [0mSparkContext[0m[0;34m([0m[0mconf[0m[0;34m=[0m[0mconf[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     54[0m [0;34m[0m[0m
+[1;32m     55[0m [0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.8/site-packages/pyspark/context.py[0m in [0;36m__init__[0;34m(self, master, appName, sparkHome, pyFiles, environment, batchSize, serializer, conf, gateway, jsc, profiler_cls, udf_profiler_cls, memory_profiler_cls)[0m
+[1;32m    198[0m         [0mSparkContext[0m[0;34m.[0m[0m_ensure_initialized[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mgateway[0m[0;34m=[0m[0mgateway[0m[0;34m,[0m [0mconf[0m[0;34m=[0m[0mconf[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    199[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 200[0;31m             self._do_init(
+[0m[1;32m    201[0m                 [0mmaster[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    202[0m                 [0mappName[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.8/site-packages/pyspark/context.py[0m in [0;36m_do_init[0;34m(self, master, appName, sparkHome, pyFiles, environment, batchSize, serializer, conf, jsc, profiler_cls, udf_profiler_cls, memory_profiler_cls)[0m
+[1;32m    285[0m [0;34m[0m[0m
+[1;32m    286[0m         [0;31m# Create the Java SparkContext through Py4J[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 287[0;31m         [0mself[0m[0;34m.[0m[0m_jsc[0m [0;34m=[0m [0mjsc[0m [0;32mor[0m [0mself[0m[0;34m.[0m[0m_initialize_context[0m[0;34m([0m[0mself[0m[0;34m.[0m[0m_conf[0m[0;34m.[0m[0m_jconf[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    288[0m         [0;31m# Reset the SparkConf to the one actually used by the SparkContext in JVM.[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    289[0m         [0mself[0m[0;34m.[0m[0m_conf[0m [0;34m=[0m [0mSparkConf[0m[0;34m([0m[0m_jconf[0m[0;34m=[0m[0mself[0m[0;34m.[0m[0m_jsc[0m[0;34m.[0m[0msc[0m[0;34m([0m[0;34m)[0m[0;34m.[0m[0mconf[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.8/site-packages/pyspark/context.py[0m in [0;36m_initialize_context[0;34m(self, jconf)[0m
+[1;32m    415[0m         """
+[1;32m    416[0m         [0;32massert[0m [0mself[0m[0;34m.[0m[0m_jvm[0m [0;32mis[0m [0;32mnot[0m [0;32mNone[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 417[0;31m         [0;32mreturn[0m [0mself[0m[0;34m.[0m[0m_jvm[0m[0;34m.[0m[0mJavaSparkContext[0m[0;34m([0m[0mjconf[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    418[0m [0;34m[0m[0m
+[1;32m    419[0m     [0;34m@[0m[0mclassmethod[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.8/site-packages/py4j/java_gateway.py[0m in [0;36m__call__[0;34m(self, *args)[0m
+[1;32m   1585[0m [0;34m[0m[0m
+[1;32m   1586[0m         [0manswer[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_gateway_client[0m[0;34m.[0m[0msend_command[0m[0;34m([0m[0mcommand[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1587[0;31m         return_value = get_return_value(
+[0m[1;32m   1588[0m             answer, self._gateway_client, None, self._fqn)
+[1;32m   1589[0m [0;34m[0m[0m
+
+[0;32m~/.local/lib/python3.8/site-packages/py4j/protocol.py[0m in [0;36mget_return_value[0;34m(answer, gateway_client, target_id, name)[0m
+[1;32m    332[0m                     format(target_id, ".", name, value))
+[1;32m    333[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 334[0;31m             raise Py4JError(
+[0m[1;32m    335[0m                 [0;34m"An error occurred while calling {0}{1}{2}"[0m[0;34m.[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    336[0m                 format(target_id, ".", name))
+
+[0;31mPy4JError[0m: An error occurred while calling None.org.apache.spark.api.java.JavaSparkContext
+Finish running CalculateFeaturesForThisVIN.

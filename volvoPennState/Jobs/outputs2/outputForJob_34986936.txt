@@ -1,0 +1,2 @@
+starting to run fixPartReplacement for job id=34986936
+the VIN for this Job is:  1M1AN4GY5MM021756

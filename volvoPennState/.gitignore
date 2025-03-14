@@ -1,0 +1,11 @@
+.ipynb_checkpoints/
+P0401_faults.csv
+P1075_*.csv
+P2457_faults.csv
+PopulationWithChassisId.csv
+data/dataset/*.csv
+volvoPennState/Jobs/outputs/*.txt
+volvoPennState/Jobs/outputs2/*.txt
+volvoPennState/Jobs/errors2/*.txt
+volvoPennState/Jobs/errors/*.txt
+volvoPennState/*.csv

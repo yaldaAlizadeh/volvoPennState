@@ -1,14 +1,29 @@
 Git Useful Commands:
 
+Git Submit:
+yaldaAlizadeh
+login password to my Github account: 
+github1362
+Password for 'https://yaldaAlizadeh@github.com': 
+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
+
+
+
 ----------------------------------------------------------------------------------------------------------------
 Solution 1:If you need to exclude a path from being added by git add . command for multiple files, use:
 
 git ls-files Jobs/outputs/ | xargs git update-index --assume-unchanged
 
 
-Solution 2: Use find to Apply to All Matching Files
-If you want to apply the command to all files in Jobs/outputs/, run:
+Solution 2: Solution 4: Exclude Files Using .gitignore Instead
+If you don’t want Git to track these files at all, the better approach is:
 
-find Jobs/outputs/ -type f -exec git update-index --assume-unchanged {} +
+Add Jobs/outputs/* to .gitignore:
 
+
+Jobs/outputs/*
+Remove already tracked files from Git:
+
+
+git rm --cached -r Jobs/outputs/
 ----------------------------------------------------------------------------------------------------------------

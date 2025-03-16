@@ -1,6 +1,6 @@
 Shell (pip and Conda) Commands
-----------------------------------------------------------------
-Conda Commands to Resolve No module name Pyspark” error
+
+<<<<<Conda Commands to Resolve No module name Pyspark” error>>>>>
 Installed packages:
 
 # !pip install SQLAlchemy
@@ -345,7 +345,12 @@ Consider creating a virtual environment that both Jupyter and your terminal can 
 After following these steps, your Jupyter notebook and terminal should use the same Python environment, and the ace_tools module should be available in both.
 
 
-4o
+
+---------------------------------------------------------------------------------------------------------
+How to kill all jobs except one specific job: 
+
+squeue -u yqf5148 --states=PENDING,RUNNING | tail -n +2 | awk '{print $1}' | grep -v 35201179 | xargs scancel
+
 
 
 

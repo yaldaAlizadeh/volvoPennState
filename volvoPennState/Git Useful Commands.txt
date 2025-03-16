@@ -1,0 +1,14 @@
+Git Useful Commands:
+
+----------------------------------------------------------------------------------------------------------------
+Solution 1:If you need to exclude a path from being added by git add . command for multiple files, use:
+
+git ls-files Jobs/outputs/ | xargs git update-index --assume-unchanged
+
+
+Solution 2: Use find to Apply to All Matching Files
+If you want to apply the command to all files in Jobs/outputs/, run:
+
+find Jobs/outputs/ -type f -exec git update-index --assume-unchanged {} +
+
+----------------------------------------------------------------------------------------------------------------

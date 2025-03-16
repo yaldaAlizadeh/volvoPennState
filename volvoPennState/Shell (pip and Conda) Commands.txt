@@ -1,0 +1,353 @@
+Shell (pip and Conda) Commands
+----------------------------------------------------------------
+Conda Commands to Resolve No module name Pyspark” error
+Installed packages:
+
+# !pip install SQLAlchemy
+# !pip install pyspark
+# !pip install jupysql duckdb duckdb-engine
+# !pip install delta-spark
+# !pip install py4j
+# !pip install -q findspark
+# conda install -c conda-forge submitit 
+# conda install corn, nbconvert
+
+
+
+
+The which command displays the full path of a file and the readlink command solves the symbolic link. We can use a combination of these commands to find the location of the JDK and JRE respectively −
+$ readlink -f $(which javac)
+/usr/lib/jvm/java-14-openjdk-amd64/bin/javac
+$ readlink -f $(which java)
+/usr/lib/jvm/java-14-openjdk-amd64/bin/java
+If you use the −f option, then it will follow every symbolic link in recursive fashion.
+----------------------------------------------------------------
+$ which java
+ANSWER: /usr/bin/java
+but:
+$ readlink -f $(which java)
+Answer: /usr/lib/jvm/java-11-openjdk-11.0.21.0.9-2.el8.x86_64/bin/java
+
+$ conda update -n base condo
+$ conda install -c conda-forge openjdk.           *** install idk
+$ Which java                                      ***idk installation path
+> /usr/bin/java
+$ echo $JAVA_HOME 
+>                                                 ***nothing!
+----------------------------------------------------------------
+Either open ~/.bashrc file and add the below line to it using Vim commands
+$ export JAVA_HOME=‘/usr/bin/java'
+using $ vi ~/.bashrc command.
+Or just type this in command line:
+$ echo 'export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-11.0.21.0.9-2.el8.x86_64/bin/java"' >> ~/.bashrc
+or like:
+echo 'export PATH=/storage/home/yqf5148/anaconda3/bin:$PATH' >> ~/.basic
+echo 'export PATH=/storage/home/yqf5148/anaconda3/bin:$PATH' >> ~/.bash_profile
+Add new path to bashrc and bash_profile using commandline.
+----------------------------------------------------------------
+If I make changes to .bashrc, how do I reload it without logging out and back in?
+You can enter the long form command:
+$    source ~/.bashrc
+or you can use the shorter version of the command:
+$    . ~/.bashrc
+Or you can do:
+$  exec bash
+----------------------------------------------------------------------------
+
+$ vi ~/.bash_profile
+Press I to go to insert mode
+Add the below lines:
+$	export JAVA_HOME=/usr/bin/java
+$	export PATH=$JAVA_HOME/bin:$PATH.     ***there must be no spaces even around =
+Press esc to exit from insert mode
+Press :wq to apply the changes and close the file 
+----------------------------------------------------------------------------
+To restart te server:
+In command line type 
+$    source ~/.bashrc
+$  exec bash
+$ source /etc/profile
+
+Then log out from any where. Close the Chrome tab. Delete job and create a new job
+
+ 
+
+خیلی مهم: برای حل مشکل java gateway error که احتمالا نشاندهنده تغییر ورژن جاوای نصب شده است باید مقادیر env variableها بروز بشود هم داخل 
+bash_profile و هم داخل bashrc
+بگذشته از تعریف environment variable ها مانند JAVA_HOME در داخل Terminal در داخل خود notebook باید این 
+سطر را یکبار اجرا کرد:
+
+%env JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.21.0.9-2.el8.x86_64
+
+Finally in the notebook press the Restart Kernel button and then run the Import pyspark command to get rid of “No module name Pyspark” error
+
+----------------------------------------------------------------------------
+To set environment variables in Jupyter notebook:
+
+%env MYPATH=C:/Folder Name/file.txt
+Or
+import os
+os.environ['MYPATH'] = "C:/Folder Name/file.txt"
+Example:
+%env JAVA_HOME="/storage/home/yqf5148/.conda/envs/pyspark_env/bin/java"
+
+----------------------------------------------------------------------------
+How to unset and env variable
+unset SPARK_HOME
+env | grep SPARK_HOME
+
+
+In order to resolve error "NotADirectoryError: [Errno 20] Not a directory:"? I removed my export SPARK_HOME and export PATH commands from bashrc and bash_profile and just remain my JAVA_HOME definition in there.
+
+---------------------------------------------------------------------------
+Check os type and version:
+$  cat /etc/os-release
+
+the download the appropriate version of anaconda from https://www.anaconda.com/download/
+and then upload it to the proper directory location and then in Terminal use the below command:
+
+$    bash ~/Downloads/Anaconda2-2019.10-MacOSX-x86_64.sh
+
+
+or to download from commandline:
+
+use wget command to download appropriate version or if you are not sure about the anaconda version that is appropriate for your linux os and just want to download the latest version use:
+
+
+$   wget -O - https://www.anaconda.com/distribution/ 2>/dev/null | sed -ne 's@.*\(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3-.*-Linux-x86_64\.sh\)\">64-Bit (x86) Installer.*@\1@p' | xargs wget
+
+This will download the latest anaconda version from scraping the html from the website https://repo.continuum.io/archive/. Then you can use bash command to install it the same as above.
+
+After anaconda installation the PATH env variable needs to change to 'export PATH=/storage/home/yqf5148/anaconda3/bin:$PATH' which is the conda directory. 
+Conda needs to be evaluated and initialized:
+
+$ eval "$(/storage/home/yqf5148/anaconda3/bin/conda shell.bash  hook)"\   ##this will be copied to bashrc file automatically after running the command. 
+$ conda init
+
+---------------------------------------------------------------------------
+Packages that need to be installed:
+
+conda install -c condo-forge python-graphviz
+
+Inside Jupiter run:
+!pip install graphviz
+And 
+!pip install pydot
+
+All commands to submit new job with script submit.sh: 
+Conda deactivate
+Cd work
+Cd volvoPennState
+Cd Jobs
+sacct -u yqf5148 --state PENDING,RUNNING
+sbatch submit.sh
+scancel jobID 
+
+/Users/yalda/OneDrive - The Pennsylvania State University/My PhD Research/V O L V O/project/volvoPennState/Jobs
+---------------------------------------------------------------------------
+Convert ipynb file to py file:
+* Open your notebook in Jupyter Lab.
+* Go to the "File" menu.
+* Choose "Export Notebook As".
+* Select "Export Notebook to Executable Script".
+* This action will convert the notebook to a Python script and prompt you to save it
+---------------------------------------------------------------------------
+
+cd ls -a    This will show all the hidden files in your home directory. "cd" will get you home and ls -a will "list all".
+
+---------------------------------------------------------------------------
+use sudo -i to start an interactive shell. Then, type your login password. Switch to root user.
+
+---------------------------------------------------------------------------
+How to create a condo environment and install customized packages and use that inside Jupyter Notebook?
+
+
+You will need to shell access the server and install conda virtual environment before using it in the Jupyter Server.
+
+Commands to setup environment:
+$ module load anaconda3
+$ conda create -n volvopennstate-env python=3 -y
+$ conda activate volvopennstate-env
+$ conda install -c anaconda numpy -y
+
+These commands will install numpy into a local (named 'base-env') environment for you. You can install any packages you want to use here. Anytime you want to use numpy (or other packages), simply activate the environment using the command:
+$ module load anaconda3
+$ conda activate volvopennstate-env
+
+To use the virtual environment in Jupyter Server, you will need to install ipykernel in the virtual environment and build the kernel.
+$ conda activate volvopennstate-env
+$ conda install -c conda-forge ipykernel -y
+$ ipython kernel install --name "local-env" --user
+You should be able to select "local-env" in the kernel inside Jupyter Notebook.
+
+ipykernel install \
+  --prefix /path/to/jupyter/env \
+  --name python-my-env \
+  --display-name "Python 3 (other-env)"
+jupyter kernelspec list. لیست هر چه که در این کرنل قرار است فرستاده شود
+This avoids some of the complications in the other examples, such as intermediate /tmp files, the --user environment (which makes all kinds of things unpredictable).
+conda install -c conda-forge notebook is sometimes necessary to avoid error ipykernel is not recognized as an internal or external command.
+
+Sometimes this command:
+conda install jupyter
+
+And still: 
+pip install ipykernel --upgrade
+---------------------------------------------------------------------------
+Run this to export (backup your condo env:
+
+conda env export >  /storage/work/yqf5148/volvoPennState/environmentBackup/volvopennstate-environment.yml
+---------------------------------------------------------------------------
+
+echo 'sc.getConf.get("spark.home")' | spark-shell
+ پیدا کردن محل نصب spark
+---------------------------------------------------------------------------
+
+
+I get this error: ModuleNotFoundError: No module named 'ace_tools'. Although I have installed ace_tools in the terminal for the kernel I use to run my jupyter nootbook. Also, I use pip install command in the above cell to install ace_tools and !pip show ace_tools shows that ace_tools exist and the installed verion's information will be displayed. Can you help me resolve this error?
+
+ChatGPT said:
+ChatGPT
+The ModuleNotFoundError: No module named 'ace_tools' suggests that while the ace_tools module is installed in your environment, your Jupyter notebook kernel might not be recognizing it. This can happen due to various reasons, such as the kernel not being linked to the correct environment where ace_tools is installed.
+Here’s how you can troubleshoot and resolve the issue:
+1. Ensure the Kernel is Linked to the Correct Environment
+Check if your Jupyter notebook is using the correct Python environment (the one where you installed ace_tools).
+* In your Jupyter notebook, click on Kernel > Change kernel and ensure you are selecting the environment where ace_tools is installed.
+2. Reinstall ace_tools in the Correct Environment
+Sometimes reinstalling in the correct environment can help.
+bash
+Copy code
+!pip install --force-reinstall ace_tools
+3. Verify the Path
+Ensure that the path where ace_tools is installed is within the sys.path of the Jupyter notebook environment.
+python
+Copy code
+import sys
+print(sys.path)
+If the path where ace_tools is installed is not listed, you can append it manually:
+python
+Copy code
+sys.path.append('/path/to/ace_tools')
+4. Check Installation
+You can also check if the module can be imported from the command line in the environment you're using:
+bash
+Copy code
+python -c "import ace_tools"
+If this works, but Jupyter still doesn't recognize it, the issue is likely with the kernel's environment setup.
+5. Restart the Kernel
+After ensuring everything is set up correctly, restart your Jupyter kernel to make sure the changes take effect:
+* Click on Kernel > Restart Kernel.
+6. Virtual Environment
+If you're using a virtual environment, make sure Jupyter is installed in that environment. If not, install it using:
+bash
+Copy code
+pip install notebook
+Then, install ace_tools within the same environment:
+bash
+Copy code
+pip install ace_tools
+Finally, make sure to restart Jupyter from within that virtual environment.
+7. Kernel Restart & Clearing Output
+As a final step, go to Kernel > Restart Kernel and Clear All Outputs to ensure everything is reloaded correctly.
+If you've tried all of these steps and are still encountering issues, please provide any additional error messages or details, and I'll help further troubleshoot the problem.
+
+---------------------------------------------------------------------------
+
+The ModuleNotFoundError: No module named 'ace_tools' in the terminal suggests that the module is either not installed in the Python environment that your terminal or Jupyter notebook is using, or there is some issue with the installation.
+Here are the steps to resolve this issue:
+1. Verify the Python Environment
+Ensure that your Jupyter notebook and terminal are using the same Python environment. You can check the Python path in both environments.
+In Jupyter Notebook:
+python
+Copy code
+import sys
+print(sys.executable)
+In your terminal, run:
+bash
+Copy code
+which python
+Both should point to the same Python interpreter. If they don’t, that’s likely the cause of the problem.
+2. Install ace_tools in the Correct Environment
+If they are different, you need to install ace_tools in the environment that your Jupyter notebook is using. You can do this directly in a Jupyter notebook cell:
+python
+Copy code
+!pip install ace_tools
+If you are sure that both environments are the same and the issue persists, try reinstalling the module:
+python
+Copy code
+!pip uninstall ace_tools -y
+!pip install ace_tools
+3. Check for Multiple Python Installations
+If you have multiple Python installations, the module might be installed in one but not recognized in another. To check where ace_tools is installed, run:
+bash
+Copy code
+pip show ace_tools
+This will show the installation path. Compare it with the path your terminal and Jupyter notebook are using.
+4. Use pip Specific to the Environment
+If you have multiple Python environments, use the specific pip associated with the environment you’re working in:
+bash
+Copy code
+/path/to/your/python -m pip install ace_tools
+Replace /path/to/your/python with the path obtained from which python or sys.executable.
+5. Kernel Restart
+Sometimes, a simple restart of the Jupyter notebook kernel can resolve the issue after installation:
+* Click Kernel > Restart Kernel.
+6. Virtual Environment
+If you are using a virtual environment, ensure it’s activated before running Jupyter Notebook or terminal commands:
+bash
+Copy code
+source /path/to/your/virtualenv/bin/activate
+Then try installing the package again.
+If you follow these steps and the issue persists, there may be an underlying issue with the environment configuration. Let me know how it goes, and I can assist further if needed!
+
+---------------------------------------------------------------------------
+
+When checking the python environment in step 1, I got two different paths. What should I do now?
+
+ChatGPT said:
+ChatGPT
+If you find that your Jupyter notebook and terminal are using different Python environments, you’ll need to align them to use the same environment. Here’s how you can do that:
+Option 1: Align Jupyter Notebook to Use the Same Environment as Your Terminal
+If the environment you prefer to use is the one from the terminal (where you installed ace_tools), you can set your Jupyter notebook to use this environment.
+1. Install ipykernel in the Terminal Environment Run the following in your terminal (the one with the preferred environment): bashCopy code  pip install ipykernel
+2.   
+3. Create a New Kernel for Jupyter Notebook After installing ipykernel, you can add your terminal environment as an option in Jupyter: bashCopy code  python -m ipykernel install --user --name myenv --display-name "Python (myenv)"
+4.    Replace myenv with the name of your environment.
+5. Switch Kernel in Jupyter Notebook In your Jupyter notebook, go to Kernel > Change Kernel, and select the newly added "Python (myenv)" kernel.
+Option 2: Align Terminal to Use the Jupyter Notebook Environment
+If you prefer to switch your terminal to the environment that your Jupyter notebook is using, you can activate the Jupyter notebook's environment in your terminal.
+1. Locate the Jupyter Environment Path The path you found in Jupyter notebook (sys.executable) will look something like this: bashCopy code  /path/to/your/jupyter/env/bin/python
+2.   
+3. Activate the Environment in the Terminal Activate the environment using the following command (based on your system):
+    * On Linux/macOS: bashCopy code  source /path/to/your/jupyter/env/bin/activate
+    *   
+    * On Windows: cmdCopy code  /path/to/your/jupyter/env/Scripts/activate
+    *   
+4. Install ace_tools in This Environment Once the environment is activated, install ace_tools: bashCopy code  pip install ace_tools
+5.   
+Option 3: Install ace_tools in Both Environments
+If you want to use both environments and ensure that ace_tools is available in both, you can simply install ace_tools in both environments:
+1. Activate the environment in the terminal, as shown above.
+2. Install ace_tools in each environment: bashCopy code  pip install ace_tools
+3.   
+Option 4: Use a Virtual Environment for Both
+Consider creating a virtual environment that both Jupyter and your terminal can use. This is especially useful for managing dependencies:
+1. Create a Virtual Environment: bashCopy code  python -m venv myenv
+2.   
+3. Activate the Virtual Environment: bashCopy code  source myenv/bin/activate  # On Linux/macOS
+4. myenv\Scripts\activate     # On Windows
+5.   
+6. Install ipykernel and ace_tools: bashCopy code  pip install ipykernel ace_tools
+7.   
+8. Add the Virtual Environment to Jupyter: bashCopy code  python -m ipykernel install --user --name myenv --display-name "Python (myenv)"
+9.   
+10. Switch to this Kernel in Jupyter.
+After following these steps, your Jupyter notebook and terminal should use the same Python environment, and the ace_tools module should be available in both.
+
+
+4o
+
+
+
+
+

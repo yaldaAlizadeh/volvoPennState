@@ -11,3 +11,7 @@ volvoPennState/Jobs/errors/*.txt
 volvoPennState/*.csv
 data/dataset/*.csv
 *.csv
+Jobs/outputs/*
+Jobs/outputs2/*
+Jobs/errors2/*
+Jobs/errors/*

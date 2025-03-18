@@ -15,11 +15,11 @@ module load anaconda3
 echo "starting to run fixPartReplacement for job id="$SLURM_JOB_ID
 export XDG_RUNTIME_DIR=""
 
-jupyter nbconvert --to script /storage/home/yqf5148/work/volvoPennState/FixPartReplacement.ipynb
+jupyter nbconvert --to script /storage/home/yqf5148/work/volvoPennState/CalculateFeaturesForThisVIN-fromWhereItLeftOff.ipynb.ipynb
 #above line does not work. in order to generate .pyb file from ipynb file, simply we go to file-> Save and Export Notebook as - > Executable Script
 
 echo "the VIN for this Job is: " $1
-ipython /storage/home/yqf5148/work/volvoPennState/FixPartReplacement.py $1 $2 $SLURM_JOB_ID
+ipython /storage/home/yqf5148/work/volvoPennState/CalculateFeaturesForThisVIN-fromWhereItLeftOff.py $1 $2 $SLURM_JOB_ID
 
 echo "Finish running fixPartReplacement."
 

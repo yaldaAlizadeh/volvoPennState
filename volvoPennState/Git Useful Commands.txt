@@ -31,9 +31,11 @@ cd ~/.local/bin
 rm -r git-lfs
 
 wget https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz
+
+هر دفعه ار اینجا به بعد باید اجرا بشود:
 tar -xvzf git-lfs-linux-amd64-v3.6.1.tar.gz
 
-mkdir -p "$HOME/.local/bin"
+mkdir -p "$HOME/.local/bin" (not this line)
 cp git-lfs-3.6.1/git-lfs "$HOME/.local/bin/"
 chmod +x "$HOME/.local/bin/git-lfs"
 git lfs --version

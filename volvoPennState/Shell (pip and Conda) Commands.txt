@@ -349,7 +349,7 @@ After following these steps, your Jupyter notebook and terminal should use the s
 ---------------------------------------------------------------------------------------------------------
 How to kill all jobs except one specific job: 
 
-squeue -u yqf5148 --states=PENDING,RUNNING | tail -n +2 | awk '{print $1}' | grep -v 35201179 | xargs scancel
+squeue -u yqf5148 --states=PENDING,RUNNING | tail -n +2 | awk '{print $1}' | grep -v 35460034 | xargs scancel
 
 
 

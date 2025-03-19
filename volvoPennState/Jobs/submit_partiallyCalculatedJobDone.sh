@@ -12,7 +12,7 @@
 
 
 module load anaconda3
-echo "starting to run fixPartReplacement for job id="$SLURM_JOB_ID
+echo "starting to run CalculateFeaturesForThisVIN-fromWhereItLeftOff for job id="$SLURM_JOB_ID
 export XDG_RUNTIME_DIR=""
 
 jupyter nbconvert --to script /storage/home/yqf5148/work/volvoPennState/CalculateFeaturesForThisVIN-fromWhereItLeftOff.ipynb.ipynb
@@ -21,6 +21,6 @@ jupyter nbconvert --to script /storage/home/yqf5148/work/volvoPennState/Calculat
 echo "the VIN for this Job is: " $1
 ipython /storage/home/yqf5148/work/volvoPennState/CalculateFeaturesForThisVIN-fromWhereItLeftOff.py $1 $2 $SLURM_JOB_ID
 
-echo "Finish running fixPartReplacement."
+echo "Finish running CalculateFeaturesForThisVIN-fromWhereItLeftOff."
 
 

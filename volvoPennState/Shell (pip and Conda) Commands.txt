@@ -1,4 +1,4 @@
-Shell (pip and Conda) Commands
+Shell, pip and Conda, etc Commands
 
 <<<<<Conda Commands to Resolve No module name Pyspark” error>>>>>
 Installed packages:
@@ -351,8 +351,11 @@ How to kill all jobs except one specific job:
 
 squeue -u yqf5148 --states=PENDING,RUNNING | tail -n +2 | awk '{print $1}' | grep -v 35460034 | xargs scancel
 
+---------------------------------------------------------------------------------------------------------
 
+Running this command shows what is taking up space in your the directory this command is running on:
 
+du -sch .[!.]* * | sort -hr
 
 
 

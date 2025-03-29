@@ -141,7 +141,8 @@ Cd volvoPennState
 Cd Jobs
 sacct -u yqf5148 --state PENDING,RUNNING
 sbatch submit.sh
-scancel jobID 
+scancel jobID or 
+scancel -u yqf5148 --state PENDING   killing all PENDING jobs
 
 /Users/yalda/OneDrive - The Pennsylvania State University/My PhD Research/V O L V O/project/volvoPennState/Jobs
 ---------------------------------------------------------------------------

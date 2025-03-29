@@ -27,18 +27,21 @@ Remove already tracked files from Git:
 
 git rm --cached -r Jobs/outputs/
 ----------------------------------------------------------------------------------------------------------------
-cd ~/.local/bin
-rm -r git-lfs
+
 
 wget https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz
 
 هر دفعه ار اینجا به بعد باید اجرا بشود:
+cd ~/.local/bin
+rm -r ~/git-lfs-3.6.1
+cd /storage/home/yqf5148
 tar -xvzf git-lfs-linux-amd64-v3.6.1.tar.gz
 
 mkdir -p "$HOME/.local/bin" 
-cp /storage/home/yqf5148/git-lfs-3.6.1/git-lfs "$HOME/.local/bin/"
+cp git-lfs-3.6.1/git-lfs "$HOME/.local/bin/"
 source ~/.bashrc
 chmod +x "$HOME/.local/bin/git-lfs"
+cd /storage/home/yqf5148/work/volvoPennState
 git lfs --version
 
 
@@ -47,4 +50,23 @@ git push origin main --force
 .
 .
 
+----------------------------------------------------------------------------------------------------------------
+Why is .git/lfs/objects so big?
+That folder stores all Git LFS-tracked files — even old versions. By default, Git LFS doesn’t delete old blobs, so over time it grows and eats your disk space.
+
+✅ Step-by-step to reclaim space
+🧼 1. Prune old LFS objects (the safe way)
+This removes unreferenced old LFS files:
+
+
+git lfs prune
+
+
+This is the official Git LFS way to remove local objects that aren’t needed anymore.
+
+2. Check what’s taking up space
+Want to see what’s big before deleting?
+
+
+du -sh .git/lfs/objects/*
 

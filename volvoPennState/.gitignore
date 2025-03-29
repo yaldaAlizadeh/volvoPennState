@@ -15,3 +15,5 @@ Jobs/outputs/*
 Jobs/outputs2/*
 Jobs/errors2/*
 Jobs/errors/*
+../.gitattributes.swp
+../anaconda3/

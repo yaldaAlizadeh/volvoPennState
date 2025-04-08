@@ -259,35 +259,36 @@ Here are the steps to resolve this issue:
 1. Verify the Python Environment
 Ensure that your Jupyter notebook and terminal are using the same Python environment. You can check the Python path in both environments.
 In Jupyter Notebook:
-python
-Copy code
+
+
+
 import sys
 print(sys.executable)
 In your terminal, run:
-bash
-Copy code
+
+
 which python
 Both should point to the same Python interpreter. If they don’t, that’s likely the cause of the problem.
 2. Install ace_tools in the Correct Environment
 If they are different, you need to install ace_tools in the environment that your Jupyter notebook is using. You can do this directly in a Jupyter notebook cell:
-python
-Copy code
+
+
 !pip install ace_tools
 If you are sure that both environments are the same and the issue persists, try reinstalling the module:
-python
-Copy code
+
+
 !pip uninstall ace_tools -y
 !pip install ace_tools
 3. Check for Multiple Python Installations
 If you have multiple Python installations, the module might be installed in one but not recognized in another. To check where ace_tools is installed, run:
-bash
-Copy code
+
+
 pip show ace_tools
 This will show the installation path. Compare it with the path your terminal and Jupyter notebook are using.
 4. Use pip Specific to the Environment
 If you have multiple Python environments, use the specific pip associated with the environment you’re working in:
-bash
-Copy code
+
+
 /path/to/your/python -m pip install ace_tools
 Replace /path/to/your/python with the path obtained from which python or sys.executable.
 5. Kernel Restart
@@ -295,8 +296,7 @@ Sometimes, a simple restart of the Jupyter notebook kernel can resolve the issue
 * Click Kernel > Restart Kernel.
 6. Virtual Environment
 If you are using a virtual environment, ensure it’s activated before running Jupyter Notebook or terminal commands:
-bash
-Copy code
+
 source /path/to/your/virtualenv/bin/activate
 Then try installing the package again.
 If you follow these steps and the issue persists, there may be an underlying issue with the environment configuration. Let me know how it goes, and I can assist further if needed!
@@ -350,7 +350,7 @@ After following these steps, your Jupyter notebook and terminal should use the s
 ---------------------------------------------------------------------------------------------------------
 How to kill all jobs except one specific job: 
 
-squeue -u yqf5148 --states=PENDING,RUNNING | tail -n +2 | awk '{print $1}' | grep -v 35460034 | xargs scancel
+squeue -u yqf5148 --states=PENDING,RUNNING | tail -n +2 | awk '{print $1}' | grep -v 35914699 | xargs scancel
 
 ---------------------------------------------------------------------------------------------------------
 

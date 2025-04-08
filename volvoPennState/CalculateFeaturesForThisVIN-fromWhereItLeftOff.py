@@ -497,6 +497,11 @@ def normalize_numeric_feature_values(statement_in_feature_name, df):
 
             
 def move_over_calendar_and_compute_features(df_selected_features_from_population_for_this_VIN, thisVIN, calendar_day_from_where_it_left_off, new_15day_end_date, span_length, dayCount, jobID):
+    
+    if calendar_day_from_where_it_left_off + dayCount > 2557:
+        print(f"Skipping calendar_day={calendar_day_from_where_it_left_off + dayCount} as it exceeds 2557.")
+        return
+    
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
     file.writelines(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount+calendar_day_from_where_it_left_off} \n")
     file.close()

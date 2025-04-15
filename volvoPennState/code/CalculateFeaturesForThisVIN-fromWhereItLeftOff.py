@@ -778,6 +778,30 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     return
 
 
+def get_max_valid_calendar_day(ins_date_str, end_date_str="2021-12-31"):
+    """
+    Calculates the maximum valid calendar day (number of days back from end_date)
+    for a VIN based on its installation date.
+    """
+    try:
+        ins_date = datetime.strptime(ins_date_str, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+        max_days = (end_date - ins_date).days
+        return max_days if max_days >= 0 else 0
+    except Exception as e:
+        print(f"Error parsing INS_DATE {ins_date_str}: {e}")
+        return 0
+    
+    
+def get_ins_date_for_vin(vin, df_pop):
+    row = df_pop[df_pop["VIN"] == vin]
+    if not row.empty:
+        return row.iloc[0]["INS_DATE"].strftime("%Y-%m-%d")  # Return as string
+    else:
+        print(f"❗ VIN {vin} not found in population data.")
+        return None
+
+
 # In[ ]:
 
 
@@ -789,6 +813,10 @@ if len(sys.argv) > 1:
     #erasing the txt file for output of the submitted job that runs this Notebook:
     # open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "w").close()
     
+    
+    columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_filtered_population_for_this_VIN.columns if 'KOLA' in s]
+    
+    
     print(f"Current VIN: {thisVIN} \n")
     print(f"Calendar_day from where it left off: {calendar_day_from_where_it_left_off} \n")
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
@@ -796,14 +824,33 @@ if len(sys.argv) > 1:
     file.writelines(f"Calendar_day from where it left off: {calendar_day_from_where_it_left_off} \n")
     file.close()
     
-    ##### Features Generator Code:
-    duration_start_date = '2014-12-30'
+    # Load the population dataset
+    population_path = "/storage/home/yqf5148/work/volvoPennState/PopulationWithChassisId.csv"
+    df_population = pd.read_csv(population_path, names=columns_of_population, dtype=str, header=None)
+    # Filter to keep only VIN and INS_DATE columns
+    df_population_filtered = df_population[["VIN", "INS_DATE"]]
+    
+    # Make sure INS_DATE is parsed correctly
+    df_population_filtered["INS_DATE"] = pd.to_datetime(df_population_filtered["INS_DATE"], errors="coerce")
+    ins_date_str = get_ins_date_for_vin(thisVIN, df_population_filtered)
+    if ins_date_str:
+        duration_start_date = ins_date_str
+    else:
+        duration_start_date = '2014-12-31'
 
     day_delta = timedelta(days = 1)
-    split_date = duration_start_date.split('-')
+    start_split_date = duration_start_date.split('-')
 
-    start_date = date(int(split_date[0]), int(split_date[1]), int(split_date[2]))
-    end_date = start_date + timedelta(days = calendar_day_from_where_it_left_off)
+    start_date = date(int(start_split_date[0]), int(start_split_date[1]), int(start_split_date[2]))
+    
+    
+    duration_end_date_str = '2021-12-31'
+    duration_end_split_date = duration_start_date_str.split('-')
+
+    duration_end_date = date(int(duration_end_split_date[0]), int(duration_end_split_date[1]), int(duration_end_split_date[2]))
+    
+    
+    end_date = duration_end_date - timedelta(days = calendar_day_from_where_it_left_off)
 
     print(f"start_date = {start_date}, end_date = {end_date}")
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")

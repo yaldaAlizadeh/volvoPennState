@@ -68,6 +68,157 @@ spark.conf.set("spark.sql.legacy.timeParserPolicy", "LEGACY")
 spark.conf.set("spark.sql.debug.maxToStringFields", 1000)  # Increase to 1000 or more as needed
 
 
+# In[ ]:
+
+
+headerList = [    
+          "calendar_day", 
+          "f_1_dtc38_1th_15d", 
+          "f_1_dtc38_2nd_15d", 
+          "f_2_dtc38_1th_15d", 
+          "f_2_dtc38_2nd_15d", 
+          "f_3_dtc38_1th_15d", 
+          "f_3_dtc38_2nd_15d", 
+          "f_4_dtc38_1th_15d", 
+          "f_4_dtc38_2nd_15d", 
+          "f_5_dtc38_1th_15d", 
+          "f_5_dtc38_2nd_15d", 
+          "f_6_dtc38_1th_15d", 
+          "f_6_dtc38_2nd_15d", 
+          "f_7_dtc38_1th_15d", 
+          "f_7_dtc38_2nd_15d", 
+          "f_8_dtc38_1th_15d", 
+          "f_8_dtc38_2nd_15d", 
+
+          "f_1_dtc75_1th_15d", 
+          "f_1_dtc75_2nd_15d", 
+          "f_2_dtc75_1th_15d", 
+          "f_2_dtc75_2nd_15d", 
+          "f_3_dtc75_1th_15d", 
+          "f_3_dtc75_2nd_15d", 
+          "f_4_dtc75_1th_15d", 
+          "f_4_dtc75_2nd_15d", 
+          "f_5_dtc75_1th_15d", 
+          "f_5_dtc75_2nd_15d", 
+          "f_6_dtc75_1th_15d", 
+          "f_6_dtc75_2nd_15d", 
+          "f_7_dtc75_1th_15d", 
+          "f_7_dtc75_2nd_15d", 
+          "f_8_dtc75_1th_15d", 
+          "f_8_dtc75_2nd_15d",
+
+
+          "f_1_dtc77_1th_15d", 
+          "f_1_dtc77_2nd_15d", 
+          "f_2_dtc77_1th_15d", 
+          "f_2_dtc77_2nd_15d", 
+          "f_3_dtc77_1th_15d", 
+          "f_3_dtc77_2nd_15d", 
+          "f_4_dtc77_1th_15d", 
+          "f_4_dtc77_2nd_15d", 
+          "f_5_dtc77_1th_15d", 
+          "f_5_dtc77_2nd_15d", 
+          "f_6_dtc77_1th_15d", 
+          "f_6_dtc77_2nd_15d", 
+          "f_7_dtc77_1th_15d", 
+          "f_7_dtc77_2nd_15d", 
+          "f_8_dtc77_1th_15d", 
+          "f_8_dtc77_2nd_15d",
+
+
+          "f_1_dtc86_1th_15d", 
+          "f_1_dtc86_2nd_15d", 
+          "f_2_dtc86_1th_15d", 
+          "f_2_dtc86_2nd_15d", 
+          "f_3_dtc86_1th_15d", 
+          "f_3_dtc86_2nd_15d", 
+          "f_4_dtc86_1th_15d", 
+          "f_4_dtc86_2nd_15d", 
+          "f_5_dtc86_1th_15d", 
+          "f_5_dtc86_2nd_15d", 
+          "f_6_dtc86_1th_15d", 
+          "f_6_dtc86_2nd_15d", 
+          "f_7_dtc86_1th_15d", 
+          "f_7_dtc86_2nd_15d", 
+          "f_8_dtc86_1th_15d", 
+          "f_8_dtc86_2nd_15d",
+
+
+          "f_1_dtc92_1th_15d", 
+          "f_1_dtc92_2nd_15d", 
+          "f_2_dtc92_1th_15d", 
+          "f_2_dtc92_2nd_15d", 
+          "f_3_dtc92_1th_15d", 
+          "f_3_dtc92_2nd_15d", 
+          "f_4_dtc92_1th_15d", 
+          "f_4_dtc92_2nd_15d", 
+          "f_5_dtc92_1th_15d", 
+          "f_5_dtc92_2nd_15d", 
+          "f_6_dtc92_1th_15d", 
+          "f_6_dtc92_2nd_15d", 
+          "f_7_dtc92_1th_15d", 
+          "f_7_dtc92_2nd_15d", 
+          "f_8_dtc92_1th_15d", 
+          "f_8_dtc92_2nd_15d",
+
+
+          "f_1_dtc94_1th_15d", 
+          "f_1_dtc94_2nd_15d", 
+          "f_2_dtc94_1th_15d", 
+          "f_2_dtc94_2nd_15d", 
+          "f_3_dtc94_1th_15d", 
+          "f_3_dtc94_2nd_15d", 
+          "f_4_dtc94_1th_15d", 
+          "f_4_dtc94_2nd_15d", 
+          "f_5_dtc94_1th_15d", 
+          "f_5_dtc94_2nd_15d", 
+          "f_6_dtc94_1th_15d", 
+          "f_6_dtc94_2nd_15d", 
+          "f_7_dtc94_1th_15d", 
+          "f_7_dtc94_2nd_15d", 
+          "f_8_dtc94_1th_15d", 
+          "f_8_dtc94_2nd_15d",
+
+
+          "f_1_dtc0401_1th_15d", 
+          "f_1_dtc0401_2nd_15d", 
+          "f_2_dtc0401_1th_15d", 
+          "f_2_dtc0401_2nd_15d", 
+          "f_3_dtc0401_1th_15d", 
+          "f_3_dtc0401_2nd_15d", 
+          "f_4_dtc0401_1th_15d", 
+          "f_4_dtc0401_2nd_15d", 
+          "f_5_dtc0401_1th_15d", 
+          "f_5_dtc0401_2nd_15d", 
+          "f_6_dtc0401_1th_15d", 
+          "f_6_dtc0401_2nd_15d", 
+          "f_7_dtc0401_1th_15d", 
+          "f_7_dtc0401_2nd_15d", 
+          "f_8_dtc0401_1th_15d", 
+          "f_8_dtc0401_2nd_15d",
+
+
+          "f_1_dtc2457_1th_15d", 
+          "f_1_dtc2457_2nd_15d", 
+          "f_2_dtc2457_1th_15d", 
+          "f_2_dtc2457_2nd_15d", 
+          "f_3_dtc2457_1th_15d", 
+          "f_3_dtc2457_2nd_15d", 
+          "f_4_dtc2457_1th_15d", 
+          "f_4_dtc2457_2nd_15d", 
+          "f_5_dtc2457_1th_15d", 
+          "f_5_dtc2457_2nd_15d", 
+          "f_6_dtc2457_1th_15d", 
+          "f_6_dtc2457_2nd_15d", 
+          "f_7_dtc2457_1th_15d", 
+          "f_7_dtc2457_2nd_15d", 
+          "f_8_dtc2457_1th_15d", 
+          "f_8_dtc2457_2nd_15d",
+
+          "if_parts_replaced_in_1th_15d", 
+          "if_parts_replaced_in_2nd_15d"]
+
+
 # In[3]:
 
 
@@ -833,6 +984,9 @@ if len(sys.argv) > 1:
     #erasing the txt file for output of the submitted job that runs this Notebook:
     # open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "w").close()
     
+    columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_filtered_population_for_this_VIN.columns if 'KOLA' in s]
+
+    
     print("Current VIN: {} \n".format(thisVIN))
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
     file.writelines(["Current VIN: {} \n".format(thisVIN)])
@@ -850,11 +1004,13 @@ if len(sys.argv) > 1:
 
     # Load the population dataset
     population_path = "/storage/home/yqf5148/work/volvoPennState/PopulationWithChassisId.csv"
-    df_population = pd.read_csv(population_path, usecols=["VIN", "INS_DATE"])
+    df_population = pd.read_csv(population_path, names=columns_of_population, dtype=str, header=None)
+    # Filter to keep only VIN and INS_DATE columns
+    df_population_filtered = df_population[["VIN", "INS_DATE"]]
     
     # Make sure INS_DATE is parsed correctly
-    df_population["INS_DATE"] = pd.to_datetime(df_population["INS_DATE"], errors="coerce")
-    ins_date_str = get_ins_date_for_vin(thisVIN, df_population)
+    df_population_filtered["INS_DATE"] = pd.to_datetime(df_population_filtered["INS_DATE"], errors="coerce")
+    ins_date_str = get_ins_date_for_vin(thisVIN, df_population_filtered)
     if ins_date_str:
         max_dayCount = get_max_valid_calendar_day(INS_DATE)
         print(f"→ Max calendar_day for {thisVIN}: {max_dayCount}")
@@ -885,10 +1041,10 @@ if len(sys.argv) > 1:
     # df_new_VIN.toPandas().to_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv', index = None, mode = 'a', header=False) 
 
 
-    df_filtered_population_for_this_VIN = df_population.filter(f.col('VIN')==thisVIN)
+    df_filtered_population_for_this_VIN = df_population_filtered.filter(f.col('VIN')==thisVIN)
     
-    selected_features_from_population_for_this_VIN = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_filtered_population_for_this_VIN.columns if 'KOLA' in s]
-    df_selected_features_from_population_for_this_VIN = df_filtered_population_for_this_VIN[selected_features_from_population_for_this_VIN]
+    
+    df_selected_features_from_population_for_this_VIN = df_filtered_population_for_this_VIN[columns_of_population]
     
     if df_selected_features_from_population_for_this_VIN.count()!= 0 :
         

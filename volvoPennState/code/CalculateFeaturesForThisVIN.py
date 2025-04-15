@@ -984,7 +984,7 @@ if len(sys.argv) > 1:
     #erasing the txt file for output of the submitted job that runs this Notebook:
     # open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "w").close()
     
-    columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_filtered_population_for_this_VIN.columns if 'KOLA' in s]
+    columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_population.columns if 'KOLA' in s]
 
     
     print("Current VIN: {} \n".format(thisVIN))

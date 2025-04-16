@@ -778,6 +778,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     return
 
 
+    
 def get_max_valid_calendar_day(ins_date_str, end_date_str="2021-12-31"):
     """
     Calculates the maximum valid calendar day (number of days back from end_date)
@@ -802,6 +803,8 @@ def get_ins_date_for_vin(vin, df_pop):
         return None
 
 
+
+
 # In[ ]:
 
 
@@ -813,7 +816,7 @@ if len(sys.argv) > 1:
     #erasing the txt file for output of the submitted job that runs this Notebook:
     # open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "w").close()
     
-    df_population
+    
     columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_population.columns if 'KOLA' in s]
     
     
@@ -825,18 +828,24 @@ if len(sys.argv) > 1:
     file.close()
     
     # Load the population dataset
-    population_path = "/storage/home/yqf5148/work/volvoPennState/PopulationWithChassisId.csv"
-    df_population = pd.read_csv(population_path, names=columns_of_population, dtype=str, header=None)
+    # population_path = "/storage/home/yqf5148/work/volvoPennState/PopulationWithChassisId.csv"
+    df_population = spark.sql("SELECT * FROM population")
     # Filter to keep only VIN and INS_DATE columns
-    df_population_filtered = df_population[["VIN", "INS_DATE"]]
+    df_population_filtered_spark = df_population[["VIN", "INS_DATE"]]
+    df_population_filtered = df_population_filtered_spark.toPandas()
     
     # Make sure INS_DATE is parsed correctly
     df_population_filtered["INS_DATE"] = pd.to_datetime(df_population_filtered["INS_DATE"], errors="coerce")
     ins_date_str = get_ins_date_for_vin(thisVIN, df_population_filtered)
+    
+    duration_start_date = '2014-12-31'
     if ins_date_str:
         duration_start_date = ins_date_str
-    else:
-        duration_start_date = '2014-12-31'
+        print(f"duration_start_date: {ins_date_str} \n")
+        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
+        file.writelines(f"duration_start_date: {ins_date_str} \n")
+        file.close()
+    
 
     day_delta = timedelta(days = 1)
     start_split_date = duration_start_date.split('-')
@@ -845,7 +854,7 @@ if len(sys.argv) > 1:
     
     
     duration_end_date_str = '2021-12-31'
-    duration_end_split_date = duration_start_date_str.split('-')
+    duration_end_split_date = duration_end_date_str.split('-')
 
     duration_end_date = date(int(duration_end_split_date[0]), int(duration_end_split_date[1]), int(duration_end_split_date[2]))
     

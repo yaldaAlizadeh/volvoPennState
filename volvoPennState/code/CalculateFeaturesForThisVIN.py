@@ -1003,26 +1003,24 @@ if len(sys.argv) > 1:
     # This avoids computing features for days before the engine started operating.
 
     # Load the population dataset
-    population_path = "/storage/home/yqf5148/work/volvoPennState/PopulationWithChassisId.csv"
-    df_population = pd.read_csv(population_path, names=columns_of_population, dtype=str, header=None)
+    # population_path = "/storage/home/yqf5148/work/volvoPennState/PopulationWithChassisId.csv"
+    df_population = spark.sql("SELECT * FROM population")
     # Filter to keep only VIN and INS_DATE columns
-    df_population_filtered = df_population[["VIN", "INS_DATE"]]
+    df_population_filtered_spark = df_population[["VIN", "INS_DATE"]]
+    df_population_filtered = df_population_filtered_spark.toPandas()
     
     # Make sure INS_DATE is parsed correctly
     df_population_filtered["INS_DATE"] = pd.to_datetime(df_population_filtered["INS_DATE"], errors="coerce")
     ins_date_str = get_ins_date_for_vin(thisVIN, df_population_filtered)
+    
+    max_dayCount = 2557
     if ins_date_str:
         max_dayCount = get_max_valid_calendar_day(INS_DATE)
-        print(f"→ Max calendar_day for {thisVIN}: {max_dayCount}")
-        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
-        file.writelines(f"→ Max calendar_day for {thisVIN}: {max_dayCount}")
-        file.close()
-    else:
-        max_dayCount = 2557 
-        print(f"→ Max calendar_day for {thisVIN}: 2557")
-        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
-        file.writelines(f"→ Max calendar_day for {thisVIN}: 2557")
-        file.close()
+    
+    print(f"→ Max calendar_day for {thisVIN}: {max_dayCount}")
+    file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
+    file.writelines(f"→ Max calendar_day for {thisVIN}: {max_dayCount}")
+    file.close()
 
     
     start_date = end_date - timedelta(days = max_dayCount)

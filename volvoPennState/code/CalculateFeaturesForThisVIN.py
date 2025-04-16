@@ -1022,8 +1022,8 @@ if len(sys.argv) > 1:
     file.writelines(f"→ Max calendar_day for {thisVIN}: {max_dayCount}")
     file.close()
 
-    
-    start_date = end_date - timedelta(days = max_dayCount)
+    #minus 1 is to consider 12/31/2021 itself
+    start_date = end_date - timedelta(days = max_dayCount - 1)
 
     print("start_date = {}, end_date = {}".format(start_date, end_date))
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")

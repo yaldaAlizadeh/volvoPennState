@@ -858,8 +858,8 @@ if len(sys.argv) > 1:
 
     duration_end_date = date(int(duration_end_split_date[0]), int(duration_end_split_date[1]), int(duration_end_split_date[2]))
     
-    
-    end_date = duration_end_date - timedelta(days = calendar_day_from_where_it_left_off)
+    #minus 1 is to consider 12/31/2021 itself
+    end_date = duration_end_date - timedelta(days = calendar_day_from_where_it_left_off - 1)
 
     print(f"start_date = {start_date}, end_date = {end_date}")
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
@@ -890,7 +890,7 @@ if len(sys.argv) > 1:
             file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
             file.writelines(f"remaining_days={remaining_days} \n")
             file.close()
-            Parallel(n_jobs= 5, prefer="threads", batch_size=5)(delayed(move_over_calen)(df_selected_features_from_population_for_this_VIN, thisVIN, calendar_day_from_where_it_left_off, end_date, span_length, day_count_in_month, the_calculator_jobID_for_thisVIN) for day_count_in_month in range(0, remaining_days))
+            Parallel(n_jobs= 5, prefer="threads", batch_size=5)(delayed(move_over_calendar_and_compute_features)(df_selected_features_from_population_for_this_VIN, thisVIN, calendar_day_from_where_it_left_off, end_date, span_length, day_count_in_month, the_calculator_jobID_for_thisVIN) for day_count_in_month in range(0, remaining_days))
         else:
             for number_of_monthes_in_time_duration in range(0, how_many_month):
                 print("number_of_monthes_in_time_duration={} \n".format(number_of_monthes_in_time_duration))

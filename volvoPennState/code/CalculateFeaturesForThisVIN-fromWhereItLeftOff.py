@@ -40,6 +40,8 @@ from delta.tables import *
 from delta import configure_spark_with_delta_pip
 from IPython import get_ipython
 
+from filelock import FileLock
+
 
 findspark.init()
 findspark.find()
@@ -762,12 +764,28 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     file.writelines(f"we finally write something of length for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
     file.close()
     
+    vin_file_path = '/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv'
+    lock_file_path = vin_file_path + '.lock'  # creates VINs_data.csv.lock
+    lock = FileLock(lock_file_path)
 
     VINs_columns_names =['VIN','TOTAL_ROWS']
-    df_VINs = pd.read_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv', sep=',', names=VINs_columns_names, header=None)
+    
+    with lock:
+        df_VINs = pd.read_csv(vin_file_path, sep=',', names=VINs_columns_names, header=None)
+        print(f"🔓 Safely read from {vin_file_path}")
+        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
+        file.writelines(f"🔓 Safely read from {vin_file_path}")
+        file.close()
+    
     df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS']] = dayCount+calendar_day_from_where_it_left_off
-
-    # df_VINs.to_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv', index = None, mode = 'w', header=False)
+    
+    with lock:  # This ensures only one job writes at a time
+        df_VINs.to_csv(vin_file_path, index = None, mode = 'w', header=False)
+        print(f"✔️ Wrote to {vin_file_path} safely with lock.")
+        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
+        file.writelines(f"✔️ Wrote to {vin_file_path} safely with lock.")
+        file.close()
+    
     
     '''here we aggregate all the selected features from the population for this VIN with the 8 calculated feature values for this VIN 
     for this specific day and then write it to resultedData.csv as one data point.'''

@@ -61,6 +61,8 @@ sc = SparkContext(conf=conf)
 spark = SparkSession.builder        .master("local[2]")        .appName("test")        .config("spark.driver.maxResultSize", "20g")       .config("spark.driver.memory", "100g")       .getOrCreate()
 
 spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")    #To resolve the error for p1075_38 to_timestamp formating: You may get a different result due to the upgrading to Spark >= 3.0: Fail to parse '1/2/2019 20:40:00' in the new parser. You can set spark.sql.legacy.timeParserPolicy to LEGACY to restore the behavior before Spark 3.0, or set to CORRECTED and treat it as an invalid datetime string.
+# Increase the max fields in the string representation of a plan
+spark.conf.set("spark.sql.debug.maxToStringFields", 1000)  # Increase to 1000 or more as needed
 
 
 # In[6]:
@@ -162,157 +164,6 @@ df_p2457 = raw_data_cleaning('p2457_faults')
 # df38.select("VIN", (fix_problem_of_fault_date_time_with_no_seconds(df38, dtc_type)).alias("FAULT_DATE_TIME_2"), "FAULT_STATUS").show()
 # df38.select("VIN", f.to_timestamp(f.col("FAULT_DATE_TIME"), "M/d/yyyy HH:mm:ss").alias("FAULT_DATE_TIME"), "FAULT_STATUS").show()
 # df75.select("VIN", f.to_timestamp(f.col("FAULT_DATE_TIME"), "yyyy-MM-dd HH:mm:ss"), "FAULT_STATUS").show()
-
-
-# In[11]:
-
-
-headerList = ["VIN",    
-          "calendar_day", 
-          "f_1_dtc38_1th_15d", 
-          "f_1_dtc38_2nd_15d", 
-          "f_2_dtc38_1th_15d", 
-          "f_2_dtc38_2nd_15d", 
-          "f_3_dtc38_1th_15d", 
-          "f_3_dtc38_2nd_15d", 
-          "f_4_dtc38_1th_15d", 
-          "f_4_dtc38_2nd_15d", 
-          "f_5_dtc38_1th_15d", 
-          "f_5_dtc38_2nd_15d", 
-          "f_6_dtc38_1th_15d", 
-          "f_6_dtc38_2nd_15d", 
-          "f_7_dtc38_1th_15d", 
-          "f_7_dtc38_2nd_15d", 
-          "f_8_dtc38_1th_15d", 
-          "f_8_dtc38_2nd_15d", 
-
-          "f_1_dtc75_1th_15d", 
-          "f_1_dtc75_2nd_15d", 
-          "f_2_dtc75_1th_15d", 
-          "f_2_dtc75_2nd_15d", 
-          "f_3_dtc75_1th_15d", 
-          "f_3_dtc75_2nd_15d", 
-          "f_4_dtc75_1th_15d", 
-          "f_4_dtc75_2nd_15d", 
-          "f_5_dtc75_1th_15d", 
-          "f_5_dtc75_2nd_15d", 
-          "f_6_dtc75_1th_15d", 
-          "f_6_dtc75_2nd_15d", 
-          "f_7_dtc75_1th_15d", 
-          "f_7_dtc75_2nd_15d", 
-          "f_8_dtc75_1th_15d", 
-          "f_8_dtc75_2nd_15d",
-
-
-          "f_1_dtc77_1th_15d", 
-          "f_1_dtc77_2nd_15d", 
-          "f_2_dtc77_1th_15d", 
-          "f_2_dtc77_2nd_15d", 
-          "f_3_dtc77_1th_15d", 
-          "f_3_dtc77_2nd_15d", 
-          "f_4_dtc77_1th_15d", 
-          "f_4_dtc77_2nd_15d", 
-          "f_5_dtc77_1th_15d", 
-          "f_5_dtc77_2nd_15d", 
-          "f_6_dtc77_1th_15d", 
-          "f_6_dtc77_2nd_15d", 
-          "f_7_dtc77_1th_15d", 
-          "f_7_dtc77_2nd_15d", 
-          "f_8_dtc77_1th_15d", 
-          "f_8_dtc77_2nd_15d",
-
-
-          "f_1_dtc86_1th_15d", 
-          "f_1_dtc86_2nd_15d", 
-          "f_2_dtc86_1th_15d", 
-          "f_2_dtc86_2nd_15d", 
-          "f_3_dtc86_1th_15d", 
-          "f_3_dtc86_2nd_15d", 
-          "f_4_dtc86_1th_15d", 
-          "f_4_dtc86_2nd_15d", 
-          "f_5_dtc86_1th_15d", 
-          "f_5_dtc86_2nd_15d", 
-          "f_6_dtc86_1th_15d", 
-          "f_6_dtc86_2nd_15d", 
-          "f_7_dtc86_1th_15d", 
-          "f_7_dtc86_2nd_15d", 
-          "f_8_dtc86_1th_15d", 
-          "f_8_dtc86_2nd_15d",
-
-
-          "f_1_dtc92_1th_15d", 
-          "f_1_dtc92_2nd_15d", 
-          "f_2_dtc92_1th_15d", 
-          "f_2_dtc92_2nd_15d", 
-          "f_3_dtc92_1th_15d", 
-          "f_3_dtc92_2nd_15d", 
-          "f_4_dtc92_1th_15d", 
-          "f_4_dtc92_2nd_15d", 
-          "f_5_dtc92_1th_15d", 
-          "f_5_dtc92_2nd_15d", 
-          "f_6_dtc92_1th_15d", 
-          "f_6_dtc92_2nd_15d", 
-          "f_7_dtc92_1th_15d", 
-          "f_7_dtc92_2nd_15d", 
-          "f_8_dtc92_1th_15d", 
-          "f_8_dtc92_2nd_15d",
-
-
-          "f_1_dtc94_1th_15d", 
-          "f_1_dtc94_2nd_15d", 
-          "f_2_dtc94_1th_15d", 
-          "f_2_dtc94_2nd_15d", 
-          "f_3_dtc94_1th_15d", 
-          "f_3_dtc94_2nd_15d", 
-          "f_4_dtc94_1th_15d", 
-          "f_4_dtc94_2nd_15d", 
-          "f_5_dtc94_1th_15d", 
-          "f_5_dtc94_2nd_15d", 
-          "f_6_dtc94_1th_15d", 
-          "f_6_dtc94_2nd_15d", 
-          "f_7_dtc94_1th_15d", 
-          "f_7_dtc94_2nd_15d", 
-          "f_8_dtc94_1th_15d", 
-          "f_8_dtc94_2nd_15d",
-
-
-          "f_1_dtc0401_1th_15d", 
-          "f_1_dtc0401_2nd_15d", 
-          "f_2_dtc0401_1th_15d", 
-          "f_2_dtc0401_2nd_15d", 
-          "f_3_dtc0401_1th_15d", 
-          "f_3_dtc0401_2nd_15d", 
-          "f_4_dtc0401_1th_15d", 
-          "f_4_dtc0401_2nd_15d", 
-          "f_5_dtc0401_1th_15d", 
-          "f_5_dtc0401_2nd_15d", 
-          "f_6_dtc0401_1th_15d", 
-          "f_6_dtc0401_2nd_15d", 
-          "f_7_dtc0401_1th_15d", 
-          "f_7_dtc0401_2nd_15d", 
-          "f_8_dtc0401_1th_15d", 
-          "f_8_dtc0401_2nd_15d",
-
-
-          "f_1_dtc2457_1th_15d", 
-          "f_1_dtc2457_2nd_15d", 
-          "f_2_dtc2457_1th_15d", 
-          "f_2_dtc2457_2nd_15d", 
-          "f_3_dtc2457_1th_15d", 
-          "f_3_dtc2457_2nd_15d", 
-          "f_4_dtc2457_1th_15d", 
-          "f_4_dtc2457_2nd_15d", 
-          "f_5_dtc2457_1th_15d", 
-          "f_5_dtc2457_2nd_15d", 
-          "f_6_dtc2457_1th_15d", 
-          "f_6_dtc2457_2nd_15d", 
-          "f_7_dtc2457_1th_15d", 
-          "f_7_dtc2457_2nd_15d", 
-          "f_8_dtc2457_1th_15d", 
-          "f_8_dtc2457_2nd_15d",
-
-          "if_parts_replaced_in_1th_15d", 
-          "if_parts_replaced_in_2nd_15d"]
 
 
 # In[ ]:
@@ -454,30 +305,57 @@ def feature_7_or_8_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this
              
     return df_dtc_type_and_status_for_this_VIN.count()
 
-    
   
 def if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, start_date, end_date):
-    fault_date_time_format='M/d/yyyy'
-    df_cca_claims = spark.sql("select * from cca_claims where cca_claims.VIN = '{}' ".format(thisVIN))
-    df_egr_cooler_claims = spark.sql("select * from egr_cooler_claims where egr_cooler_claims.VIN = '{}' ".format(thisVIN))
-    df_egr_fg_293_claims = spark.sql("select * from egr_fg_293_claims where egr_fg_293_claims.VIN = '{}' ".format(thisVIN))
-    df_egr_sensors_claims = spark.sql("select * from egr_sensors where egr_sensors.VIN = '{}' ".format(thisVIN))
+    # Initialize an empty list to store the results
+    replacement_records = []
 
-    df_cca_claims_part_replacements = df_cca_claims.filter((f.col('CLAIM_REG_DATE') > start_date) & (f.col('CLAIM_REG_DATE') < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
+    fault_date_time_format = 'MM/dd/yyyy'
+    start_date = '2014-12-31'
+    end_date = '2021-12-31'
 
-    df_egr_cooler_claims_part_replacements = df_egr_cooler_claims.filter((f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format)> start_date) & (f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format) < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
+    # Load all claims tables for the specific VIN
+    claims_datasets = {
+        'cca_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM cca_claims WHERE VIN = '{thisVIN}'",
+        'egr_cooler_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM egr_cooler_claims WHERE VIN = '{thisVIN}'",
+        'egr_fg_293_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM egr_fg_293_claims WHERE VIN = '{thisVIN}'",
+        'egr_sensors_claims': f"SELECT VIN, CLAIM_REG_DATE, TOT_CLAIM_PAYMENT_USD FROM egr_sensors WHERE VIN = '{thisVIN}'"
+    }
 
-    df_egr_fg_293_claims_part_replacements = df_egr_fg_293_claims.filter((f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format)> start_date) & (f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format) < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
-        
-    df_egr_sensors_claims_part_replacements = df_egr_sensors_claims.filter((f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format)> start_date) & (f.to_timestamp(f.col('CLAIM_REG_DATE'), fault_date_time_format) < end_date) & (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0))
+    # Define filtering condition with corrected date format
+    for dataset_name, query in claims_datasets.items():
+        try:
+            df_claims = spark.sql(query)
 
-    
-    number_of_parts_replaced_for_thisVIN = df_cca_claims_part_replacements.count() + df_egr_cooler_claims_part_replacements.count() + df_egr_fg_293_claims_part_replacements.count() + df_egr_sensors_claims_part_replacements.count()
-    
-    if number_of_parts_replaced_for_thisVIN > 0:
-        return 1
-    else:
-        return 0
+            if df_claims is not None and df_claims.count() > 0:
+
+                # df_claims.printSchema()  # Debugging step
+                # df_claims.show(5, truncate=False)  # Show sample data
+
+                df_claims = df_claims.withColumn("CLAIM_REG_DATE", f.to_date(f.col("CLAIM_REG_DATE"), "MM/dd/yyyy"))
+
+                # Try alternative filtering
+                df_filtered = df_claims.filter(
+                    (f.col('CLAIM_REG_DATE') >= f.to_date(f.lit(start_date), "yyyy-MM-dd")) &
+                    (f.col('CLAIM_REG_DATE') <= f.to_date(f.lit(end_date), "yyyy-MM-dd")) &
+                    (f.col('TOT_CLAIM_PAYMENT_USD') > 1000.0)
+                )
+
+                # df_filtered.show(5, truncate=False)  # Show filtered data
+
+                if df_filtered is not None and df_filtered.count() > 0:
+                    for row in df_filtered.collect():
+                        replacement_records.append([thisVIN, dataset_name, row['CLAIM_REG_DATE'], row['TOT_CLAIM_PAYMENT_USD']])
+
+        except AnalysisException as e:
+            print(f"Error processing dataset {dataset_name} for VIN {thisVIN}: {e}")
+
+
+        if replacement_records:
+            return 1
+        else:
+            return 0
+
 
 
   
@@ -508,10 +386,6 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     file.writelines(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount+calendar_day_from_where_it_left_off} \n")
     file.close()
     print(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount+calendar_day_from_where_it_left_off} \n") 
-
-#     schema = StructType([])   ***** This does not work. Creating EmptyRDD does not allow to add further columns later using withColumn  ****
-#     df_features_for_this_VIN_and_this_dayCount = sqlContext.createDataFrame(sc.emptyRDD(), schema)
-#     df_features_for_this_VIN_and_this_dayCount = df_features_for_this_VIN_and_this_dayCount.withColumn("VIN", f.lit(thisVIN)).withColumn("calendar_day", (f.lit(dayCount)).cast(IntegerType()))
 
     
     schema = StructType([StructField('VIN', StringType(), True),
@@ -768,7 +642,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     lock_file_path = vin_file_path + '.lock'  # creates VINs_data.csv.lock
     lock = FileLock(lock_file_path)
 
-    VINs_columns_names =['VIN','TOTAL_ROWS']
+    VINs_columns_names =['VIN','TOTAL_ROWS','CALCULATION']
     
     with lock:
         df_VINs = pd.read_csv(vin_file_path, sep=',', names=VINs_columns_names, header=None)
@@ -777,7 +651,8 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file.writelines(f"🔓 Safely read from {vin_file_path}")
         file.close()
     
-    df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS']] = dayCount+calendar_day_from_where_it_left_off
+    df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS', 'CALCULATION']] = [dayCount + calendar_day_from_where_it_left_off, 'UP']
+
     
     with lock:  # This ensures only one job writes at a time
         df_VINs.to_csv(vin_file_path, index = None, mode = 'w', header=False)
@@ -859,10 +734,11 @@ if len(sys.argv) > 1:
     duration_start_date = '2014-12-31'
     if ins_date_str:
         duration_start_date = ins_date_str
-        print(f"duration_start_date: {ins_date_str} \n")
-        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
-        file.writelines(f"duration_start_date: {ins_date_str} \n")
-        file.close()
+        
+    print(f"duration_start_date: {duration_start_date} \n")
+    file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
+    file.writelines(f"duration_start_date: {duration_start_date} \n")
+    file.close()
     
 
     day_delta = timedelta(days = 1)
@@ -888,14 +764,17 @@ if len(sys.argv) > 1:
 
 
     VIN_feature_columns = StructType([StructField('VIN', StringType(), True),
-                                      StructField('TOTAL_ROWS', IntegerType(), True)])
-    df_new_VIN = spark.createDataFrame(data = [(thisVIN, 0)], schema = VIN_feature_columns)
+                                      StructField('TOTAL_ROWS', IntegerType(), True),
+                                      StructField('CALCULATION', StringType(), True)])
+    df_new_VIN = spark.createDataFrame(data = [(thisVIN, 0,  'NF')], schema = VIN_feature_columns)
     # df_new_VIN.toPandas().to_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv', index = None, mode = 'a', header=False) 
 
 
     df_filtered_population_for_this_VIN = df_population.filter(f.col('VIN')==thisVIN)
+    
     selected_features_from_population_for_this_VIN = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_filtered_population_for_this_VIN.columns if 'KOLA' in s]
     df_selected_features_from_population_for_this_VIN = df_filtered_population_for_this_VIN[selected_features_from_population_for_this_VIN]
+    
     if df_selected_features_from_population_for_this_VIN.count()!= 0 :
         how_many_month = int((end_date - start_date).days/15)
         print("how_many_month={} \n".format(how_many_month))
@@ -909,6 +788,7 @@ if len(sys.argv) > 1:
             file.writelines(f"remaining_days={remaining_days} \n")
             file.close()
             Parallel(n_jobs= 5, prefer="threads", batch_size=5)(delayed(move_over_calendar_and_compute_features)(df_selected_features_from_population_for_this_VIN, thisVIN, calendar_day_from_where_it_left_off, end_date, span_length, day_count_in_month, the_calculator_jobID_for_thisVIN) for day_count_in_month in range(0, remaining_days))
+
         else:
             for number_of_monthes_in_time_duration in range(0, how_many_month):
                 print("number_of_monthes_in_time_duration={} \n".format(number_of_monthes_in_time_duration))
@@ -926,12 +806,34 @@ if len(sys.argv) > 1:
                     file.close()
                     Parallel(n_jobs= 5, prefer="threads", batch_size=5)(delayed(move_over_calendar_and_compute_features)(df_selected_features_from_population_for_this_VIN, thisVIN, calendar_day_from_where_it_left_off, end_date, span_length, 15 * number_of_monthes_in_time_duration + day_count_in_month, the_calculator_jobID_for_thisVIN) for day_count_in_month in range(0, remaining_days))
 
+        vin_file_path = '/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv'
+        lock_file_path = vin_file_path + '.lock'  # creates VINs_data.csv.lock
+        lock = FileLock(lock_file_path)
 
+        VINs_columns_names =['VIN','TOTAL_ROWS','CALCULATION']
+    
+        with lock:
+            df_VINs = pd.read_csv(vin_file_path, sep=',', names=VINs_columns_names, header=None)
+            print(f"🔓 Safely read from {vin_file_path}")
+            file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
+            file.writelines(f"🔓 Safely read from {vin_file_path}")
+            file.close()
+        
+        df_VINs.loc[df_VINs['VIN'] == thisVIN, ['CALCULATION']] = ['FN']
+
+    
+        with lock:  # This ensures only one job writes at a time
+            df_VINs.to_csv(vin_file_path, index = None, mode = 'w', header=False)
+            print(f"✔️ Wrote to {vin_file_path} safely with lock.")
+            file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
+            file.writelines(f"✔️ Wrote to {vin_file_path} safely with lock.")
+            file.close()
 else:
     
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/errors/error_log_{the_calculator_jobID_for_thisVIN}.txt", "a")
     file.writelines(["The VIN argument is failed to be passed for feature calculations. \n".format(remaining_days)])
     file.close()
+    
 
 
 # In[ ]:

@@ -59,7 +59,7 @@ sc = SparkContext(conf=conf)
 # sc = SparkContext("local", "Simple App")
 
 # Create SparkSession 
-spark = SparkSession.builder        .master("local[2]")        .appName("test")        .config("spark.driver.maxResultSize", "12g")       .config("spark.driver.memory", "120g")       .getOrCreate()
+spark = SparkSession.builder        .master("local[2]")        .appName("test")        .config("spark.driver.maxResultSize", "20g")       .config("spark.driver.memory", "100g")       .getOrCreate()
 
 #both works
 # 1: 
@@ -74,161 +74,9 @@ spark.conf.set("spark.sql.debug.maxToStringFields", 1000)  # Increase to 1000 or
 # In[ ]:
 
 
-headerList = [    
-          "calendar_day", 
-          "f_1_dtc38_1th_15d", 
-          "f_1_dtc38_2nd_15d", 
-          "f_2_dtc38_1th_15d", 
-          "f_2_dtc38_2nd_15d", 
-          "f_3_dtc38_1th_15d", 
-          "f_3_dtc38_2nd_15d", 
-          "f_4_dtc38_1th_15d", 
-          "f_4_dtc38_2nd_15d", 
-          "f_5_dtc38_1th_15d", 
-          "f_5_dtc38_2nd_15d", 
-          "f_6_dtc38_1th_15d", 
-          "f_6_dtc38_2nd_15d", 
-          "f_7_dtc38_1th_15d", 
-          "f_7_dtc38_2nd_15d", 
-          "f_8_dtc38_1th_15d", 
-          "f_8_dtc38_2nd_15d", 
-
-          "f_1_dtc75_1th_15d", 
-          "f_1_dtc75_2nd_15d", 
-          "f_2_dtc75_1th_15d", 
-          "f_2_dtc75_2nd_15d", 
-          "f_3_dtc75_1th_15d", 
-          "f_3_dtc75_2nd_15d", 
-          "f_4_dtc75_1th_15d", 
-          "f_4_dtc75_2nd_15d", 
-          "f_5_dtc75_1th_15d", 
-          "f_5_dtc75_2nd_15d", 
-          "f_6_dtc75_1th_15d", 
-          "f_6_dtc75_2nd_15d", 
-          "f_7_dtc75_1th_15d", 
-          "f_7_dtc75_2nd_15d", 
-          "f_8_dtc75_1th_15d", 
-          "f_8_dtc75_2nd_15d",
-
-
-          "f_1_dtc77_1th_15d", 
-          "f_1_dtc77_2nd_15d", 
-          "f_2_dtc77_1th_15d", 
-          "f_2_dtc77_2nd_15d", 
-          "f_3_dtc77_1th_15d", 
-          "f_3_dtc77_2nd_15d", 
-          "f_4_dtc77_1th_15d", 
-          "f_4_dtc77_2nd_15d", 
-          "f_5_dtc77_1th_15d", 
-          "f_5_dtc77_2nd_15d", 
-          "f_6_dtc77_1th_15d", 
-          "f_6_dtc77_2nd_15d", 
-          "f_7_dtc77_1th_15d", 
-          "f_7_dtc77_2nd_15d", 
-          "f_8_dtc77_1th_15d", 
-          "f_8_dtc77_2nd_15d",
-
-
-          "f_1_dtc86_1th_15d", 
-          "f_1_dtc86_2nd_15d", 
-          "f_2_dtc86_1th_15d", 
-          "f_2_dtc86_2nd_15d", 
-          "f_3_dtc86_1th_15d", 
-          "f_3_dtc86_2nd_15d", 
-          "f_4_dtc86_1th_15d", 
-          "f_4_dtc86_2nd_15d", 
-          "f_5_dtc86_1th_15d", 
-          "f_5_dtc86_2nd_15d", 
-          "f_6_dtc86_1th_15d", 
-          "f_6_dtc86_2nd_15d", 
-          "f_7_dtc86_1th_15d", 
-          "f_7_dtc86_2nd_15d", 
-          "f_8_dtc86_1th_15d", 
-          "f_8_dtc86_2nd_15d",
-
-
-          "f_1_dtc92_1th_15d", 
-          "f_1_dtc92_2nd_15d", 
-          "f_2_dtc92_1th_15d", 
-          "f_2_dtc92_2nd_15d", 
-          "f_3_dtc92_1th_15d", 
-          "f_3_dtc92_2nd_15d", 
-          "f_4_dtc92_1th_15d", 
-          "f_4_dtc92_2nd_15d", 
-          "f_5_dtc92_1th_15d", 
-          "f_5_dtc92_2nd_15d", 
-          "f_6_dtc92_1th_15d", 
-          "f_6_dtc92_2nd_15d", 
-          "f_7_dtc92_1th_15d", 
-          "f_7_dtc92_2nd_15d", 
-          "f_8_dtc92_1th_15d", 
-          "f_8_dtc92_2nd_15d",
-
-
-          "f_1_dtc94_1th_15d", 
-          "f_1_dtc94_2nd_15d", 
-          "f_2_dtc94_1th_15d", 
-          "f_2_dtc94_2nd_15d", 
-          "f_3_dtc94_1th_15d", 
-          "f_3_dtc94_2nd_15d", 
-          "f_4_dtc94_1th_15d", 
-          "f_4_dtc94_2nd_15d", 
-          "f_5_dtc94_1th_15d", 
-          "f_5_dtc94_2nd_15d", 
-          "f_6_dtc94_1th_15d", 
-          "f_6_dtc94_2nd_15d", 
-          "f_7_dtc94_1th_15d", 
-          "f_7_dtc94_2nd_15d", 
-          "f_8_dtc94_1th_15d", 
-          "f_8_dtc94_2nd_15d",
-
-
-          "f_1_dtc0401_1th_15d", 
-          "f_1_dtc0401_2nd_15d", 
-          "f_2_dtc0401_1th_15d", 
-          "f_2_dtc0401_2nd_15d", 
-          "f_3_dtc0401_1th_15d", 
-          "f_3_dtc0401_2nd_15d", 
-          "f_4_dtc0401_1th_15d", 
-          "f_4_dtc0401_2nd_15d", 
-          "f_5_dtc0401_1th_15d", 
-          "f_5_dtc0401_2nd_15d", 
-          "f_6_dtc0401_1th_15d", 
-          "f_6_dtc0401_2nd_15d", 
-          "f_7_dtc0401_1th_15d", 
-          "f_7_dtc0401_2nd_15d", 
-          "f_8_dtc0401_1th_15d", 
-          "f_8_dtc0401_2nd_15d",
-
-
-          "f_1_dtc2457_1th_15d", 
-          "f_1_dtc2457_2nd_15d", 
-          "f_2_dtc2457_1th_15d", 
-          "f_2_dtc2457_2nd_15d", 
-          "f_3_dtc2457_1th_15d", 
-          "f_3_dtc2457_2nd_15d", 
-          "f_4_dtc2457_1th_15d", 
-          "f_4_dtc2457_2nd_15d", 
-          "f_5_dtc2457_1th_15d", 
-          "f_5_dtc2457_2nd_15d", 
-          "f_6_dtc2457_1th_15d", 
-          "f_6_dtc2457_2nd_15d", 
-          "f_7_dtc2457_1th_15d", 
-          "f_7_dtc2457_2nd_15d", 
-          "f_8_dtc2457_1th_15d", 
-          "f_8_dtc2457_2nd_15d",
-
-          "if_parts_replaced_in_1th_15d", 
-          "if_parts_replaced_in_2nd_15d"]
-
-
-# In[3]:
-
-
 def raw_data_cleaning(dtc_type):
     df = spark.sql("SELECT * FROM {} WHERE _C0 IS NOT NULL AND _C0 != 'NA' AND _C0 != '' AND MESSAGE_ID IS NOT NULL AND MESSAGE_ID != '' AND MESSAGE_ID != 'NA' AND FAULT_DATE_TIME IS NOT NULL AND FAULT_DATE_TIME != '' AND FAULT_DATE_TIME != 'NA' AND FAULT_STATUS IS NOT NULL AND FAULT_STATUS != '' AND FAULT_STATUS != 'NA' AND VIN IS NOT NULL AND VIN != '' AND VIN != 'NA' AND length(VIN) !< 17".format(dtc_type)) 
     return df
-    
 
 
 # In[4]:
@@ -262,15 +110,7 @@ spark.read.option("header",True)           .csv("/storage/home/yqf5148/work/volv
 
 spark.read.option("header",True)           .csv("/storage/home/yqf5148/work/volvoPennState/P1075_92.csv")           .createOrReplaceTempView("p1075_92")
  
-spark.read.option("header",True)           .csv("/storage/home/yqf5148/work/volvoPennState/P1075_94.csv")           .createOrReplaceTempView("p1075_94")   #Adding .option("skipRows", range(2784329,2784830)) does not work for skipping rows for pyspark dataframe
-
-# dataFrame = spark.read.format("csv").option("header", "true").option("inferSchema", "true").option("skipRows", range(2784329,2784830)) \
-#           .load("P1075_94.csv")
-
-
-
-
-# data = pd.read_csv('P1075_94.csv',skiprows=list(range(2784329,2784830)),low_memory=False)   list[range(2784329,2784830)]  works to skip row for pandas dataframe
+spark.read.option("header",True)           .csv("/storage/home/yqf5148/work/volvoPennState/P1075_94.csv")           .createOrReplaceTempView("p1075_94")   
 
 spark.read.option("header",True)           .csv("/storage/home/yqf5148/work/volvoPennState/P0401_faults.csv")           .createOrReplaceTempView("p0401_faults")
 
@@ -297,181 +137,6 @@ df_p1075_94 = raw_data_cleaning('p1075_94')
 df_p0401 = raw_data_cleaning('p0401_faults')
 
 df_p2457 = raw_data_cleaning('p2457_faults')
-
-
-# In[6]:
-
-
-# df38 = spark.read.option("header",True).csv("P1075_38.csv")
-# df75 = spark.read.option("header",True).csv("P1075_75.csv")
-# df77 = spark.read.option("header",True).csv("P1075_77.csv")
-# df86 = spark.read.option("header",True).csv("P1075_86.csv")
-# df92 = spark.read.option("header",True).csv("P1075_92.csv")
-# df94 = spark.read.option("header",True).csv("P1075_94.csv")
-# df0401 = spark.read.option("header",True).csv("P0401_faults.csv")
-# df2457 = spark.read.option("header",True).csv("P2457_faults.csv")
-
-
-# In[7]:
-
-
-# dtc_type="p1075_38"    
-# df38.select("VIN", f.to_timestamp(f.concat(lit("1/1/2019 20:40"), lit(":00")), "M/d/yyyy HH:mm:ss").alias("FAULT_DATE_TIME"), "FAULT_STATUS").show()
-# df38.select("VIN", f.to_timestamp(f.concat(df38.FAULT_DATE_TIME, lit(":00")), "M/d/yyyy HH:mm:ss").alias("FAULT_DATE_TIME"), "FAULT_STATUS").show()
-# df38.select("VIN", (fix_problem_of_fault_date_time_with_no_seconds(df38, dtc_type)).alias("FAULT_DATE_TIME_2"), "FAULT_STATUS").show()
-# df38.select("VIN", f.to_timestamp(f.col("FAULT_DATE_TIME"), "M/d/yyyy HH:mm:ss").alias("FAULT_DATE_TIME"), "FAULT_STATUS").show()
-# df75.select("VIN", f.to_timestamp(f.col("FAULT_DATE_TIME"), "yyyy-MM-dd HH:mm:ss"), "FAULT_STATUS").show()
-
-
-# In[8]:
-
-
-headerList = ["VIN",    
-          "calendar_day", 
-          "f_1_dtc38_1th_15d", 
-          "f_1_dtc38_2nd_15d", 
-          "f_2_dtc38_1th_15d", 
-          "f_2_dtc38_2nd_15d", 
-          "f_3_dtc38_1th_15d", 
-          "f_3_dtc38_2nd_15d", 
-          "f_4_dtc38_1th_15d", 
-          "f_4_dtc38_2nd_15d", 
-          "f_5_dtc38_1th_15d", 
-          "f_5_dtc38_2nd_15d", 
-          "f_6_dtc38_1th_15d", 
-          "f_6_dtc38_2nd_15d", 
-          "f_7_dtc38_1th_15d", 
-          "f_7_dtc38_2nd_15d", 
-          "f_8_dtc38_1th_15d", 
-          "f_8_dtc38_2nd_15d", 
-
-          "f_1_dtc75_1th_15d", 
-          "f_1_dtc75_2nd_15d", 
-          "f_2_dtc75_1th_15d", 
-          "f_2_dtc75_2nd_15d", 
-          "f_3_dtc75_1th_15d", 
-          "f_3_dtc75_2nd_15d", 
-          "f_4_dtc75_1th_15d", 
-          "f_4_dtc75_2nd_15d", 
-          "f_5_dtc75_1th_15d", 
-          "f_5_dtc75_2nd_15d", 
-          "f_6_dtc75_1th_15d", 
-          "f_6_dtc75_2nd_15d", 
-          "f_7_dtc75_1th_15d", 
-          "f_7_dtc75_2nd_15d", 
-          "f_8_dtc75_1th_15d", 
-          "f_8_dtc75_2nd_15d",
-
-
-          "f_1_dtc77_1th_15d", 
-          "f_1_dtc77_2nd_15d", 
-          "f_2_dtc77_1th_15d", 
-          "f_2_dtc77_2nd_15d", 
-          "f_3_dtc77_1th_15d", 
-          "f_3_dtc77_2nd_15d", 
-          "f_4_dtc77_1th_15d", 
-          "f_4_dtc77_2nd_15d", 
-          "f_5_dtc77_1th_15d", 
-          "f_5_dtc77_2nd_15d", 
-          "f_6_dtc77_1th_15d", 
-          "f_6_dtc77_2nd_15d", 
-          "f_7_dtc77_1th_15d", 
-          "f_7_dtc77_2nd_15d", 
-          "f_8_dtc77_1th_15d", 
-          "f_8_dtc77_2nd_15d",
-
-
-          "f_1_dtc86_1th_15d", 
-          "f_1_dtc86_2nd_15d", 
-          "f_2_dtc86_1th_15d", 
-          "f_2_dtc86_2nd_15d", 
-          "f_3_dtc86_1th_15d", 
-          "f_3_dtc86_2nd_15d", 
-          "f_4_dtc86_1th_15d", 
-          "f_4_dtc86_2nd_15d", 
-          "f_5_dtc86_1th_15d", 
-          "f_5_dtc86_2nd_15d", 
-          "f_6_dtc86_1th_15d", 
-          "f_6_dtc86_2nd_15d", 
-          "f_7_dtc86_1th_15d", 
-          "f_7_dtc86_2nd_15d", 
-          "f_8_dtc86_1th_15d", 
-          "f_8_dtc86_2nd_15d",
-
-
-          "f_1_dtc92_1th_15d", 
-          "f_1_dtc92_2nd_15d", 
-          "f_2_dtc92_1th_15d", 
-          "f_2_dtc92_2nd_15d", 
-          "f_3_dtc92_1th_15d", 
-          "f_3_dtc92_2nd_15d", 
-          "f_4_dtc92_1th_15d", 
-          "f_4_dtc92_2nd_15d", 
-          "f_5_dtc92_1th_15d", 
-          "f_5_dtc92_2nd_15d", 
-          "f_6_dtc92_1th_15d", 
-          "f_6_dtc92_2nd_15d", 
-          "f_7_dtc92_1th_15d", 
-          "f_7_dtc92_2nd_15d", 
-          "f_8_dtc92_1th_15d", 
-          "f_8_dtc92_2nd_15d",
-
-
-          "f_1_dtc94_1th_15d", 
-          "f_1_dtc94_2nd_15d", 
-          "f_2_dtc94_1th_15d", 
-          "f_2_dtc94_2nd_15d", 
-          "f_3_dtc94_1th_15d", 
-          "f_3_dtc94_2nd_15d", 
-          "f_4_dtc94_1th_15d", 
-          "f_4_dtc94_2nd_15d", 
-          "f_5_dtc94_1th_15d", 
-          "f_5_dtc94_2nd_15d", 
-          "f_6_dtc94_1th_15d", 
-          "f_6_dtc94_2nd_15d", 
-          "f_7_dtc94_1th_15d", 
-          "f_7_dtc94_2nd_15d", 
-          "f_8_dtc94_1th_15d", 
-          "f_8_dtc94_2nd_15d",
-
-
-          "f_1_dtc0401_1th_15d", 
-          "f_1_dtc0401_2nd_15d", 
-          "f_2_dtc0401_1th_15d", 
-          "f_2_dtc0401_2nd_15d", 
-          "f_3_dtc0401_1th_15d", 
-          "f_3_dtc0401_2nd_15d", 
-          "f_4_dtc0401_1th_15d", 
-          "f_4_dtc0401_2nd_15d", 
-          "f_5_dtc0401_1th_15d", 
-          "f_5_dtc0401_2nd_15d", 
-          "f_6_dtc0401_1th_15d", 
-          "f_6_dtc0401_2nd_15d", 
-          "f_7_dtc0401_1th_15d", 
-          "f_7_dtc0401_2nd_15d", 
-          "f_8_dtc0401_1th_15d", 
-          "f_8_dtc0401_2nd_15d",
-
-
-          "f_1_dtc2457_1th_15d", 
-          "f_1_dtc2457_2nd_15d", 
-          "f_2_dtc2457_1th_15d", 
-          "f_2_dtc2457_2nd_15d", 
-          "f_3_dtc2457_1th_15d", 
-          "f_3_dtc2457_2nd_15d", 
-          "f_4_dtc2457_1th_15d", 
-          "f_4_dtc2457_2nd_15d", 
-          "f_5_dtc2457_1th_15d", 
-          "f_5_dtc2457_2nd_15d", 
-          "f_6_dtc2457_1th_15d", 
-          "f_6_dtc2457_2nd_15d", 
-          "f_7_dtc2457_1th_15d", 
-          "f_7_dtc2457_2nd_15d", 
-          "f_8_dtc2457_1th_15d", 
-          "f_8_dtc2457_2nd_15d",
-
-          "if_parts_replaced_in_1th_15d", 
-          "if_parts_replaced_in_2nd_15d"]
 
 
 # In[9]:
@@ -662,25 +327,28 @@ def if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, start_date, end_d
   
 # Normalize using Min/Max Normalization.
 def normalize_numeric_feature_values(statement_in_feature_name, df):
-
-  selected_col_names_list = [col for col in df.columns.values if statement_in_feature_name in col]   # selects names of columns that contain specific string
-
-  selected_cols = df[selected_col_names_list]
-  for col_name in selected_col_names_list:
-      selected_cols[col_name] = selected_cols[col_name].str.replace(",",".")
-      selected_cols[col_name] = selected_cols[col_name].apply(lambda x: float(x.split()[0]))
-
-  selected_cols_norm = selected_cols.apply(lambda iterator: ((iterator - iterator.mean())/(iterator.max() - iterator.min())).round(3))
-
-  df[selected_cols_norm.columns] = selected_cols_norm
-  return df
+    selected_col_names_list = [col for col in df.columns.values if statement_in_feature_name in col]   # selects names of columns that contain specific string
+    selected_cols = df[selected_col_names_list]
+    
+    for col_name in selected_col_names_list:
+        selected_cols[col_name] = selected_cols[col_name].str.replace(",",".")
+        selected_cols[col_name] = selected_cols[col_name].apply(lambda x: float(x.split()[0]))
+        
+    selected_cols_norm = selected_cols.apply(lambda iterator: ((iterator - iterator.mean())/(iterator.max() - iterator.min())).round(3))
+    
+    df[selected_cols_norm.columns] = selected_cols_norm
+    return df
 
             
 def move_over_calendar_and_compute_features(df_selected_features_from_population_for_this_VIN, thisVIN, new_15day_end_date, span_length, dayCount, jobID):
+    if dayCount > 2557:
+            print(f"Skipping calendar_day={dayCount} as it exceeds 2557.")
+            return
+    
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-    file.writelines(["A new day move on calendar: thisVIN={}, new_15day_end_date={}, span_length={}, dayCount={} \n".format(thisVIN, new_15day_end_date, span_length, dayCount)])
+    file.writelines(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount} \n")
     file.close()
-    print("A new day move on calendar: thisVIN={}, new_15day_end_date={}, span_length={}, dayCount={} \n".format(thisVIN, new_15day_end_date, span_length, dayCount)) 
+    print(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount} \n") 
 
 #     schema = StructType([])   ***** This does not work. Creating EmptyRDD does not allow to add further columns later using withColumn  ****
 #     df_features_for_this_VIN_and_this_dayCount = sqlContext.createDataFrame(sc.emptyRDD(), schema)
@@ -722,9 +390,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: number of alerts over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-        file.writelines(["feature 1 for {} in day {} and dtc_type {} \n".format(thisVIN, dayCount, list_of_dtc_type[i])])
+        file.writelines(f"feature 1 for {thisVIN} in day {dayCount} and dtc_type {list_of_dtc_type[i]} \n")
         file.close()
-        print("feature 1 for {} in day {} and dtc_type {} \n".format(thisVIN, dayCount, list_of_dtc_type[i]))
+        print(f"feature 1 for {thisVIN} in day {dayCount} and dtc_type {list_of_dtc_type[i]} \n")
         
         if count1 > 0:
             feature_1_value_first_15days = feature_1_or_2_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, "Y")
@@ -746,9 +414,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: number of intermittent alerts over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-        file.writelines(["feature 2 for {} in day {} \n".format(thisVIN, dayCount)])
+        file.writelines(f"feature 2 for {thisVIN} in day {dayCount} \n")
         file.close()
-        print("feature 2 for {} in day {} \n".format(thisVIN, dayCount))
+        print(f"feature 2 for {thisVIN} in day {dayCount} \n")
 
         if count1 > 0:
             feature_2_value_first_15days = feature_1_or_2_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, "I")
@@ -768,9 +436,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: duration of active alerts over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-        file.writelines(["feature 3 for {} in day {} \n".format(thisVIN, dayCount)])
+        file.writelines(f"feature 3 for {thisVIN} in day {dayCount} \n")
         file.close()
-        print("feature 3 for {} in day {} \n".format(thisVIN, dayCount))
+        print(f"feature 3 for {thisVIN} in day {dayCount} \n")
         
         if count1 > 0:
             feature_3_value_first_15days = feature_3_or_4_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "Y")
@@ -789,9 +457,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: duration of intermittent alerts over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-        file.writelines(["feature 4 for {} in day {} \n".format(thisVIN, dayCount)])
+        file.writelines(f"feature 4 for {thisVIN} in day {dayCount} \n")
         file.close()
-        print("feature 4 for {} in day {} \n".format(thisVIN, dayCount))
+        print(f"feature 4 for {thisVIN} in day {dayCount} \n")
 
         if count1 > 0:
             feature_4_value_first_15days = feature_3_or_4_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "I")
@@ -809,9 +477,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: average time between active alerts over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-        file.writelines(["feature 5 for {} in day {} \n".format(thisVIN, dayCount)])
+        file.writelines(f"feature 5 for {thisVIN} in day {dayCount} \n")
         file.close()
-        print("feature 5 for {} in day {} \n".format(thisVIN, dayCount))
+        print(f"feature 5 for {thisVIN} in day {dayCount} \n")
 
         if count1 > 0:
             feature_5_value_first_15days =  feature_5_or_6_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "Y")
@@ -830,9 +498,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: average time between intermittent alerts over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-        file.writelines(["feature 6 for {} in day {} \n".format(thisVIN, dayCount)])
+        file.writelines(f"feature 6 for {thisVIN} in day {dayCount} \n")
         file.close()
-        print("feature 6 for {} in day {} \n".format(thisVIN, dayCount))
+        print(f"feature 6 for {thisVIN} in day {dayCount} \n")
 
         if count1 > 0:
             feature_6_value_first_15days =  feature_5_or_6_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "I")
@@ -851,9 +519,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: number of active alerts with speed = 0 over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-        file.writelines(["feature 7 for {} in day {} \n".format(thisVIN, dayCount)])
+        file.writelines(f"feature 7 for {thisVIN} in day {dayCount} \n")
         file.close()
-        print("feature 7 for {} in day {} \n".format(thisVIN, dayCount))
+        print(f"feature 7 for {thisVIN} in day {dayCount} \n")
 
         if count1 > 0:        
             feature_7_value_first_15days =  feature_7_or_8_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, 0, "Y")
@@ -872,9 +540,9 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         Definition: number of intermittent alerts with speed = 0 over the last (span_length = )15 days and the second #(span_length = )15 days before this period for each VIN for the duration of X year(s) (duration_of_compare)
         '''
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a") 
-        file.writelines(["feature 8 for {} in day {} \n".format(thisVIN, dayCount)])
+        file.writelines(f"feature 8 for {thisVIN} in day {dayCount} \n")
         file.close()
-        print("feature 8 for {} in day {} \n".format(thisVIN, dayCount))
+        print(f"feature 8 for {thisVIN} in day {dayCount} \n")
 
         if count1 > 0:        
             feature_8_value_first_15days =  feature_7_or_8_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, 0, "I")
@@ -931,18 +599,17 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         #   for loop finished 
         
     df_calculated_features_for_this_VIN_and_this_dayCount = df_calculated_features_for_this_VIN_and_this_dayCount.withColumn("if_parts_replaced_in_first_15days", (f.lit(if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, new_15day_start_date, new_15day_end_date))).cast(IntegerType()))  .withColumn("if_parts_replaced_in_second_15days", (f.lit(if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, previous_15day_duration_start_date, previous_15day_duration_end_date))).cast(IntegerType()))
-    print("we finally write something of length for {} in day {} \n".format(thisVIN, dayCount))
-#     dataset_is_generated = 1
+    print(f"we finally write something of length for {thisVIN} in day {dayCount} \n")
+
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
-    file.writelines(["we finally write something of length for {} in day {} \n".format(thisVIN, dayCount)])
+    file.writelines(f"we finally write something of length for {thisVIN} in day {dayCount} \n")
     file.close()
     
-
-   vin_file_path = '/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv'
+    vin_file_path = '/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv'
     lock_file_path = vin_file_path + '.lock'  # creates VINs_data.csv.lock
     lock = FileLock(lock_file_path)
 
-    VINs_columns_names =['VIN','TOTAL_ROWS']
+    VINs_columns_names =['VIN','TOTAL_ROWS','CALCULATION']
     
     with lock:
         df_VINs = pd.read_csv(vin_file_path, sep=',', names=VINs_columns_names, header=None)
@@ -951,7 +618,8 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file.writelines(f"🔓 Safely read from {vin_file_path}")
         file.close()
     
-    df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS']] = dayCount
+    df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS', 'CALCULATION']] = [dayCount, 'UP']
+
     
     with lock:  # This ensures only one job writes at a time
         df_VINs.to_csv(vin_file_path, index = None, mode = 'w', header=False)
@@ -960,13 +628,15 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file.writelines(f"✔️ Wrote to {vin_file_path} safely with lock.")
         file.close()
     
+    
     '''here we aggregate all the selected features from the population for this VIN with the 8 calculated feature values for this VIN 
     for this specific day and then write it to resultedData.csv as one data point.'''
 
-    list_features_for_this_VIN_and_this_dayCount = [df_selected_features_from_population_for_this_VIN, df_calculated_features_for_this_VIN_and_this_dayCount]
+    list_features_for_this_VIN_and_this_dayCount = [df_selected_features_from_population_for_this_VIN, ]
     df_features_for_this_VIN_and_this_dayCount = reduce(lambda x, y: x.join(y, on="VIN"), list_features_for_this_VIN_and_this_dayCount)
     df_features_for_this_VIN_and_this_dayCount.toPandas().to_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/resultedData.csv', index = None, mode = 'a', header=False) 
     return
+
 
 
 def get_max_valid_calendar_day(ins_date_str, end_date_str="2021-12-31"):
@@ -1003,8 +673,6 @@ if len(sys.argv) > 1:
     #erasing the txt file for output of the submitted job that runs this Notebook:
     # open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "w").close()
     
-    columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_population.columns if 'KOLA' in s]
-
     
     print("Current VIN: {} \n".format(thisVIN))
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
@@ -1015,14 +683,13 @@ if len(sys.argv) > 1:
     duration_end_date = '2021-12-31'
 
     day_delta = timedelta(days = 1)
-    split_date = duration_end_date.split('-')
-    end_date = date(int(split_date[0]), int(split_date[1]), int(split_date[2]))
+    split_duration_end_date = duration_end_date.split('-')
+    end_date = date(int(split_duration_end_date[0]), int(split_duration_end_date[1]), int(split_duration_end_date[2]))
     
     # Limit calendar_day range based on VIN's actual INS_DATE (installation date).
     # This avoids computing features for days before the engine started operating.
 
     # Load the population dataset
-    # population_path = "/storage/home/yqf5148/work/volvoPennState/PopulationWithChassisId.csv"
     df_population = spark.sql("SELECT * FROM population")
     # Filter to keep only VIN and INS_DATE columns
     df_population_filtered_spark = df_population[["VIN", "INS_DATE"]]
@@ -1034,7 +701,7 @@ if len(sys.argv) > 1:
     
     max_dayCount = 2557
     if ins_date_str:
-        max_dayCount = get_max_valid_calendar_day(INS_DATE)
+        max_dayCount = get_max_valid_calendar_day(ins_date_str)
     
     print(f"→ Max calendar_day for {thisVIN}: {max_dayCount}")
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
@@ -1053,14 +720,15 @@ if len(sys.argv) > 1:
 
 
     VIN_feature_columns = StructType([StructField('VIN', StringType(), True),
-                                      StructField('TOTAL_ROWS', IntegerType(), True)])
-    df_new_VIN = spark.createDataFrame(data = [(thisVIN, 0)], schema = VIN_feature_columns)
+                                      StructField('TOTAL_ROWS', IntegerType(), True),
+                                      StructField('CALCULATION', StringType(), True)])
+    df_new_VIN = spark.createDataFrame(data = [(thisVIN, 0, 'NF')], schema = VIN_feature_columns)
     # df_new_VIN.toPandas().to_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv', index = None, mode = 'a', header=False) 
 
 
     df_filtered_population_for_this_VIN = df_population_filtered.filter(f.col('VIN')==thisVIN)
     
-    
+    columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_population.columns if 'KOLA' in s]
     df_selected_features_from_population_for_this_VIN = df_filtered_population_for_this_VIN[columns_of_population]
     
     if df_selected_features_from_population_for_this_VIN.count()!= 0 :
@@ -1094,6 +762,28 @@ if len(sys.argv) > 1:
                     file.close()
                     Parallel(n_jobs= 5, prefer="threads", batch_size=5)(delayed(move_over_calendar_and_compute_features)(df_selected_features_from_population_for_this_VIN, thisVIN, end_date, span_length, 15 * number_of_monthes_in_time_duration + day_count_in_month, the_calculator_jobID_for_thisVIN) for day_count_in_month in range(0, remaining_days))
 
+        vin_file_path = '/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv'
+        lock_file_path = vin_file_path + '.lock'  # creates VINs_data.csv.lock
+        lock = FileLock(lock_file_path)
+
+        VINs_columns_names =['VIN','TOTAL_ROWS','CALCULATION']
+    
+        with lock:
+            df_VINs = pd.read_csv(vin_file_path, sep=',', names=VINs_columns_names, header=None)
+            print(f"🔓 Safely read from {vin_file_path}")
+            file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
+            file.writelines(f"🔓 Safely read from {vin_file_path}")
+            file.close()
+        
+        df_VINs.loc[df_VINs['VIN'] == thisVIN, ['CALCULATION']] = ['FN']
+
+    
+        with lock:  # This ensures only one job writes at a time
+            df_VINs.to_csv(vin_file_path, index = None, mode = 'w', header=False)
+            print(f"✔️ Wrote to {vin_file_path} safely with lock.")
+            file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
+            file.writelines(f"✔️ Wrote to {vin_file_path} safely with lock.")
+            file.close()            
 
 else:
     

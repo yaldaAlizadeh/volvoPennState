@@ -142,6 +142,157 @@ df_p0401 = raw_data_cleaning('p0401_faults')
 df_p2457 = raw_data_cleaning('p2457_faults')
 
 
+# In[ ]:
+
+
+headerList = ["VIN",  
+          "calendar_day", 
+          "f_1_dtc38_1th_15d", 
+          "f_1_dtc38_2nd_15d", 
+          "f_2_dtc38_1th_15d", 
+          "f_2_dtc38_2nd_15d", 
+          "f_3_dtc38_1th_15d", 
+          "f_3_dtc38_2nd_15d", 
+          "f_4_dtc38_1th_15d", 
+          "f_4_dtc38_2nd_15d", 
+          "f_5_dtc38_1th_15d", 
+          "f_5_dtc38_2nd_15d", 
+          "f_6_dtc38_1th_15d", 
+          "f_6_dtc38_2nd_15d", 
+          "f_7_dtc38_1th_15d", 
+          "f_7_dtc38_2nd_15d", 
+          "f_8_dtc38_1th_15d", 
+          "f_8_dtc38_2nd_15d", 
+
+          "f_1_dtc75_1th_15d", 
+          "f_1_dtc75_2nd_15d", 
+          "f_2_dtc75_1th_15d", 
+          "f_2_dtc75_2nd_15d", 
+          "f_3_dtc75_1th_15d", 
+          "f_3_dtc75_2nd_15d", 
+          "f_4_dtc75_1th_15d", 
+          "f_4_dtc75_2nd_15d", 
+          "f_5_dtc75_1th_15d", 
+          "f_5_dtc75_2nd_15d", 
+          "f_6_dtc75_1th_15d", 
+          "f_6_dtc75_2nd_15d", 
+          "f_7_dtc75_1th_15d", 
+          "f_7_dtc75_2nd_15d", 
+          "f_8_dtc75_1th_15d", 
+          "f_8_dtc75_2nd_15d",
+
+
+          "f_1_dtc77_1th_15d", 
+          "f_1_dtc77_2nd_15d", 
+          "f_2_dtc77_1th_15d", 
+          "f_2_dtc77_2nd_15d", 
+          "f_3_dtc77_1th_15d", 
+          "f_3_dtc77_2nd_15d", 
+          "f_4_dtc77_1th_15d", 
+          "f_4_dtc77_2nd_15d", 
+          "f_5_dtc77_1th_15d", 
+          "f_5_dtc77_2nd_15d", 
+          "f_6_dtc77_1th_15d", 
+          "f_6_dtc77_2nd_15d", 
+          "f_7_dtc77_1th_15d", 
+          "f_7_dtc77_2nd_15d", 
+          "f_8_dtc77_1th_15d", 
+          "f_8_dtc77_2nd_15d",
+
+
+          "f_1_dtc86_1th_15d", 
+          "f_1_dtc86_2nd_15d", 
+          "f_2_dtc86_1th_15d", 
+          "f_2_dtc86_2nd_15d", 
+          "f_3_dtc86_1th_15d", 
+          "f_3_dtc86_2nd_15d", 
+          "f_4_dtc86_1th_15d", 
+          "f_4_dtc86_2nd_15d", 
+          "f_5_dtc86_1th_15d", 
+          "f_5_dtc86_2nd_15d", 
+          "f_6_dtc86_1th_15d", 
+          "f_6_dtc86_2nd_15d", 
+          "f_7_dtc86_1th_15d", 
+          "f_7_dtc86_2nd_15d", 
+          "f_8_dtc86_1th_15d", 
+          "f_8_dtc86_2nd_15d",
+
+
+          "f_1_dtc92_1th_15d", 
+          "f_1_dtc92_2nd_15d", 
+          "f_2_dtc92_1th_15d", 
+          "f_2_dtc92_2nd_15d", 
+          "f_3_dtc92_1th_15d", 
+          "f_3_dtc92_2nd_15d", 
+          "f_4_dtc92_1th_15d", 
+          "f_4_dtc92_2nd_15d", 
+          "f_5_dtc92_1th_15d", 
+          "f_5_dtc92_2nd_15d", 
+          "f_6_dtc92_1th_15d", 
+          "f_6_dtc92_2nd_15d", 
+          "f_7_dtc92_1th_15d", 
+          "f_7_dtc92_2nd_15d", 
+          "f_8_dtc92_1th_15d", 
+          "f_8_dtc92_2nd_15d",
+
+
+          "f_1_dtc94_1th_15d", 
+          "f_1_dtc94_2nd_15d", 
+          "f_2_dtc94_1th_15d", 
+          "f_2_dtc94_2nd_15d", 
+          "f_3_dtc94_1th_15d", 
+          "f_3_dtc94_2nd_15d", 
+          "f_4_dtc94_1th_15d", 
+          "f_4_dtc94_2nd_15d", 
+          "f_5_dtc94_1th_15d", 
+          "f_5_dtc94_2nd_15d", 
+          "f_6_dtc94_1th_15d", 
+          "f_6_dtc94_2nd_15d", 
+          "f_7_dtc94_1th_15d", 
+          "f_7_dtc94_2nd_15d", 
+          "f_8_dtc94_1th_15d", 
+          "f_8_dtc94_2nd_15d",
+
+
+          "f_1_dtc0401_1th_15d", 
+          "f_1_dtc0401_2nd_15d", 
+          "f_2_dtc0401_1th_15d", 
+          "f_2_dtc0401_2nd_15d", 
+          "f_3_dtc0401_1th_15d", 
+          "f_3_dtc0401_2nd_15d", 
+          "f_4_dtc0401_1th_15d", 
+          "f_4_dtc0401_2nd_15d", 
+          "f_5_dtc0401_1th_15d", 
+          "f_5_dtc0401_2nd_15d", 
+          "f_6_dtc0401_1th_15d", 
+          "f_6_dtc0401_2nd_15d", 
+          "f_7_dtc0401_1th_15d", 
+          "f_7_dtc0401_2nd_15d", 
+          "f_8_dtc0401_1th_15d", 
+          "f_8_dtc0401_2nd_15d",
+
+
+          "f_1_dtc2457_1th_15d", 
+          "f_1_dtc2457_2nd_15d", 
+          "f_2_dtc2457_1th_15d", 
+          "f_2_dtc2457_2nd_15d", 
+          "f_3_dtc2457_1th_15d", 
+          "f_3_dtc2457_2nd_15d", 
+          "f_4_dtc2457_1th_15d", 
+          "f_4_dtc2457_2nd_15d", 
+          "f_5_dtc2457_1th_15d", 
+          "f_5_dtc2457_2nd_15d", 
+          "f_6_dtc2457_1th_15d", 
+          "f_6_dtc2457_2nd_15d", 
+          "f_7_dtc2457_1th_15d", 
+          "f_7_dtc2457_2nd_15d", 
+          "f_8_dtc2457_1th_15d", 
+          "f_8_dtc2457_2nd_15d",
+
+          "if_parts_replaced_in_1th_15d", 
+          "if_parts_replaced_in_2nd_15d"]
+
+
 # In[9]:
 
 
@@ -665,7 +816,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     '''here we aggregate all the selected features from the population for this VIN with the 8 calculated feature values for this VIN 
     for this specific day and then write it to resultedData.csv as one data point.'''
 
-    list_features_for_this_VIN_and_this_dayCount = [df_selected_features_from_population_for_this_VIN, ]
+    list_features_for_this_VIN_and_this_dayCount = [df_selected_features_from_population_for_this_VIN, df_calculated_features_for_this_VIN_and_this_dayCount]
     df_features_for_this_VIN_and_this_dayCount = reduce(lambda x, y: x.join(y, on="VIN"), list_features_for_this_VIN_and_this_dayCount)
     df_features_for_this_VIN_and_this_dayCount.toPandas().to_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/resultedData.csv', index = None, mode = 'a', header=False) 
     return

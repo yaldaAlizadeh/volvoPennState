@@ -499,7 +499,10 @@ def if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, start_date, end_d
                         replacement_records.append([thisVIN, dataset_name, row['CLAIM_REG_DATE'], row['TOT_CLAIM_PAYMENT_USD']])
 
         except AnalysisException as e:
-            print(f"Error processing dataset {dataset_name} for VIN {thisVIN}: {e}")
+            #             print(f"Error processing dataset {dataset_name} for VIN {thisVIN}: {e}")
+            file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/errors/errorFileName_{jobID}.txt", "a")
+            file.writelines(f"Error processing dataset {dataset_name} for VIN {thisVIN}: {e}")
+            file.close()
 
 
         if replacement_records:
@@ -530,17 +533,20 @@ def normalize_numeric_feature_values(statement_in_feature_name, df):
 def move_over_calendar_and_compute_features(df_selected_features_from_population_for_this_VIN, thisVIN, calendar_day_from_where_it_left_off, new_15day_end_date, span_length, dayCount, jobID):
     
     if calendar_day_from_where_it_left_off + dayCount > 2557:
-        print(f"Skipping calendar_day={calendar_day_from_where_it_left_off + dayCount} as it exceeds 2557.")
+#         print(f"Skipping calendar_day={calendar_day_from_where_it_left_off + dayCount} as it exceeds 2557.")
+        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
+        file.writelines(f"Skipping calendar_day={calendar_day_from_where_it_left_off + dayCount} as it exceeds 2557.")
+        file.close()
         return
     
+    
+#     print(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount+calendar_day_from_where_it_left_off} \n") 
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
     file.writelines(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount+calendar_day_from_where_it_left_off} \n")
     file.close()
-    print(f"A new day move on calendar: thisVIN={thisVIN}, new_15day_end_date={new_15day_end_date}, span_length={span_length}, dayCount={dayCount+calendar_day_from_where_it_left_off} \n") 
-
     
     schema = StructType([StructField('VIN', StringType(), True),
-                      StructField('calendar_day', IntegerType(), True)])
+                  StructField('calendar_day', IntegerType(), True)])
     data = [
         (thisVIN, dayCount + calendar_day_from_where_it_left_off)
       ]
@@ -576,7 +582,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"feature 1 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} and dtc_type {list_of_dtc_type[i]} \n")
         file.close()
-        print(f"feature 1 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} and dtc_type {list_of_dtc_type[i]} \n")
+#         print(f"feature 1 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} and dtc_type {list_of_dtc_type[i]} \n")
         
         if count1 > 0:
             feature_1_value_first_15days = feature_1_or_2_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, "Y")
@@ -600,7 +606,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"feature 2 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         file.close()
-        print(f"feature 2 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#         print(f"feature 2 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
 
         if count1 > 0:
             feature_2_value_first_15days = feature_1_or_2_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, "I")
@@ -622,7 +628,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"feature 3 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         file.close()
-        print(f"feature 3 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#         print(f"feature 3 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         
         if count1 > 0:
             feature_3_value_first_15days = feature_3_or_4_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "Y")
@@ -643,7 +649,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"feature 4 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         file.close()
-        print(f"feature 4 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#         print(f"feature 4 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
 
         if count1 > 0:
             feature_4_value_first_15days = feature_3_or_4_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "I")
@@ -663,7 +669,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"feature 5 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         file.close()
-        print(f"feature 5 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#         print(f"feature 5 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
 
         if count1 > 0:
             feature_5_value_first_15days =  feature_5_or_6_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "Y")
@@ -684,7 +690,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"feature 6 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         file.close()
-        print(f"feature 6 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#         print(f"feature 6 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
 
         if count1 > 0:
             feature_6_value_first_15days =  feature_5_or_6_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, list_of_dtc_type[i], "I")
@@ -705,7 +711,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"feature 7 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         file.close()
-        print(f"feature 7 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#         print(f"feature 7 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
 
         if count1 > 0:        
             feature_7_value_first_15days =  feature_7_or_8_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, 0, "Y")
@@ -726,7 +732,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a") 
         file.writelines(f"feature 8 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
         file.close()
-        print(f"feature 8 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#         print(f"feature 8 for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
 
         if count1 > 0:        
             feature_8_value_first_15days =  feature_7_or_8_calculate_for_this_VIN_and_this_timespan(df_dtc_type_for_this_VIN_in_first_15day_timespan, 0, "I")
@@ -783,7 +789,7 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
         #   for loop finished 
         
     df_calculated_features_for_this_VIN_and_this_dayCount = df_calculated_features_for_this_VIN_and_this_dayCount.withColumn("if_parts_replaced_in_first_15days", (f.lit(if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, new_15day_start_date, new_15day_end_date))).cast(IntegerType()))  .withColumn("if_parts_replaced_in_second_15days", (f.lit(if_part_is_replaced_for_this_VIN_in_this_timespan(thisVIN, previous_15day_duration_start_date, previous_15day_duration_end_date))).cast(IntegerType()))
-    print(f"we finally write something of length for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
+#     print(f"we finally write something of length for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
 #     dataset_is_generated = 1
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
     file.writelines(f"we finally write something of length for {thisVIN} in day {dayCount+calendar_day_from_where_it_left_off} \n")
@@ -797,17 +803,21 @@ def move_over_calendar_and_compute_features(df_selected_features_from_population
     
     with lock:
         df_VINs = pd.read_csv(vin_file_path, sep=',', names=VINs_columns_names, header=None)
-        print(f"🔓 Safely read from {vin_file_path}")
+#         print(f"🔓 Safely read from {vin_file_path}")
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"🔓 Safely read from {vin_file_path}")
         file.close()
     
-    df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS', 'CALCULATION']] = [dayCount + calendar_day_from_where_it_left_off, 'UP']
+    # Assuming this is inside a loop or function where thisVIN, dayCount, calendar_day_from_where_it_left_off, and df_VINs are defined
+    if df_VINs.loc[df_VINs['VIN'] == thisVIN, 'CALCULATION'].iloc[0] != 'FN':
+        df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS', 'CALCULATION']] = [dayCount + calendar_day_from_where_it_left_off, 'UP']
+    else:
+        df_VINs.loc[df_VINs['VIN'] == thisVIN, ['TOTAL_ROWS', 'CALCULATION']] = [dayCount + calendar_day_from_where_it_left_off, 'FN']
 
     
     with lock:  # This ensures only one job writes at a time
         df_VINs.to_csv(vin_file_path, index = None, mode = 'w', header=False)
-        print(f"✔️ Wrote to {vin_file_path} safely with lock.")
+#         print(f"✔️ Wrote to {vin_file_path} safely with lock.")
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
         file.writelines(f"✔️ Wrote to {vin_file_path} safely with lock.")
         file.close()
@@ -834,7 +844,10 @@ def get_max_valid_calendar_day(ins_date_str, end_date_str="2021-12-31"):
         max_days = (end_date - ins_date).days
         return max_days if max_days >= 0 else 0
     except Exception as e:
-        print(f"Error parsing INS_DATE {ins_date_str}: {e}")
+#         print(f"Error parsing INS_DATE {ins_date_str}: {e}")
+        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/errors/errorFileName_{jobID}.txt", "a")
+        file.writelines(f"Error parsing INS_DATE {ins_date_str}: {e}")
+        file.close()
         return 0
     
     
@@ -843,9 +856,11 @@ def get_ins_date_for_vin(vin, df_pop):
     if not row.empty:
         return row.iloc[0]["INS_DATE"].strftime("%Y-%m-%d")  # Return as string
     else:
-        print(f"❗ VIN {vin} not found in population data.")
+#         print(f"❗ VIN {vin} not found in population data.")
+        file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{jobID}.txt", "a")
+        file.writelines(f"❗ VIN {vin} not found in population data.")
+        file.close()
         return None
-
 
 
 
@@ -864,8 +879,8 @@ if len(sys.argv) > 1:
     columns_of_population = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_population.columns if 'KOLA' in s]
     
     
-    print(f"Current VIN: {thisVIN} \n")
-    print(f"Calendar_day from where it left off: {calendar_day_from_where_it_left_off} \n")
+    # print(f"Current VIN: {thisVIN} \n")
+    # print(f"Calendar_day from where it left off: {calendar_day_from_where_it_left_off} \n")
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
     file.writelines(f"Current VIN: {thisVIN} \n")
     file.writelines(f"Calendar_day from where it left off: {calendar_day_from_where_it_left_off} \n")
@@ -886,7 +901,7 @@ if len(sys.argv) > 1:
     if ins_date_str:
         duration_start_date = ins_date_str
         
-    print(f"duration_start_date: {duration_start_date} \n")
+    # print(f"duration_start_date: {duration_start_date} \n")
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
     file.writelines(f"duration_start_date: {duration_start_date} \n")
     file.close()
@@ -906,7 +921,7 @@ if len(sys.argv) > 1:
     #minus 1 is to consider 12/31/2021 itself
     end_date = duration_end_date - timedelta(days = calendar_day_from_where_it_left_off - 1)
 
-    print(f"start_date = {start_date}, end_date = {end_date}")
+    # print(f"start_date = {start_date}, end_date = {end_date}")
     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
     file.writelines(f"start_date = {start_date}, end_date = {end_date} \n")
     file.close()
@@ -921,20 +936,21 @@ if len(sys.argv) > 1:
     # df_new_VIN.toPandas().to_csv('/storage/home/yqf5148/work/volvoPennState/data/dataset/VINs_data.csv', index = None, mode = 'a', header=False) 
 
 
-    df_filtered_population_for_this_VIN = df_population.filter(f.col('VIN')==thisVIN)
+    df_filtered_population_for_this_VIN = df_population.filter(f.col('VIN') == thisVIN)
+
     
     selected_features_from_population_for_this_VIN = ['VIN','ENGINE_SIZE','ENGINE_HP','VEH_TYPE']+[s for s in df_filtered_population_for_this_VIN.columns if 'KOLA' in s]
     df_selected_features_from_population_for_this_VIN = df_filtered_population_for_this_VIN[selected_features_from_population_for_this_VIN]
     
     if df_selected_features_from_population_for_this_VIN.count()!= 0 :
         how_many_month = int((end_date - start_date).days/15)
-        print("how_many_month={} \n".format(how_many_month))
+        # print("how_many_month={} \n".format(how_many_month))
         file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
         file.writelines(["how_many_month={} \n".format(how_many_month)])
         file.close()
         if how_many_month == 0:
             remaining_days = int((end_date - start_date).days) 
-            print(f"remaining_days={remaining_days} \n")
+            # print(f"remaining_days={remaining_days} \n")
             file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
             file.writelines(f"remaining_days={remaining_days} \n")
             file.close()
@@ -942,7 +958,7 @@ if len(sys.argv) > 1:
 
         else:
             for number_of_monthes_in_time_duration in range(0, how_many_month):
-                print("number_of_monthes_in_time_duration={} \n".format(number_of_monthes_in_time_duration))
+                # print("number_of_monthes_in_time_duration={} \n".format(number_of_monthes_in_time_duration))
                 file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
                 file.writelines(["number_of_monthes_in_time_duration={} \n".format(number_of_monthes_in_time_duration)])
                 file.close()
@@ -951,7 +967,7 @@ if len(sys.argv) > 1:
 
                 else:
                     remaining_days = int((end_date - start_date).days) - 15 * number_of_monthes_in_time_duration 
-                    print("remaining_days={} \n".format(remaining_days))
+                    # print("remaining_days={} \n".format(remaining_days))
                     file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
                     file.writelines(["remaining_days={} \n".format(remaining_days)])
                     file.close()
@@ -965,7 +981,7 @@ if len(sys.argv) > 1:
     
         with lock:
             df_VINs = pd.read_csv(vin_file_path, sep=',', names=VINs_columns_names, header=None)
-            print(f"🔓 Safely read from {vin_file_path}")
+            # print(f"🔓 Safely read from {vin_file_path}")
             file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
             file.writelines(f"🔓 Safely read from {vin_file_path}")
             file.close()
@@ -975,7 +991,7 @@ if len(sys.argv) > 1:
     
         with lock:  # This ensures only one job writes at a time
             df_VINs.to_csv(vin_file_path, index = None, mode = 'w', header=False)
-            print(f"✔️ Wrote to {vin_file_path} safely with lock.")
+            # print(f"✔️ Wrote to {vin_file_path} safely with lock.")
             file = open(f"/storage/home/yqf5148/work/volvoPennState/Jobs/outputs/outputForJob_{the_calculator_jobID_for_thisVIN}.txt", "a")
             file.writelines(f"✔️ Wrote to {vin_file_path} safely with lock.")
             file.close()
@@ -985,85 +1001,4 @@ else:
     file.writelines(["The VIN argument is failed to be passed for feature calculations. \n".format(remaining_days)])
     file.close()
     
-
-
-# In[ ]:
-
-
-#         lists = results_for_this_VIN_this_day
-#         list_of_res = np.array(pd.concat([pd.Series(x) for x in lists], axis=1)).T.tolist()
-
-#         data = list_of_res[0][0]
-#         df_features_for_this_VIN_and_this_dayCount = spark.createDataFrame(data = [data], schema = feature_columns)
-
-#         for i in range(1, int(len(list_of_res))):
-#             list_for_thisVIN_and_thisDay = list_of_res[i][0]
-#             df_for_thisVIN_and_thisDay = spark.createDataFrame(data = [list_for_thisVIN_and_thisDay], schema = feature_columns)
-#             df_features_for_this_VIN_and_this_dayCount = df_features_for_this_VIN_and_this_dayCount.union(df_for_thisVIN_and_thisDay)
-#         #end for-loop
-
-#         ndays = df_features_for_this_VIN_and_this_dayCount.count()
-#         if ndays > 0:
-#             print('we finally write something of length', ndays)
-#     #         df_features_for_this_VIN_and_this_dayCount.write.mode("append").format('delta').saveAsTable('df_AMT_features2')   on Databricks we were saving results into a table on database. 
-#     #         df_features_for_this_VIN_and_this_dayCount.repartition(1).write.option("header",True).csv(path="./data", mode="append")
-#     #         write_csv_with_specific_file_name(sc, df_features_for_this_VIN_and_this_dayCount, "./data", "/resulted_dataset.csv")
-#             df_features_for_this_VIN_and_this_dayCount.repartition(1).write.option("header",True).format("csv").mode("append").save("./data/dataset")
-
-
-# In[ ]:
-
-
-# # import pandas module
-# import pandas as pd
- 
-# # consider a list
-# list1 = ["durga", "ramya", "sravya"]
-# list2 = ["java", "php", "mysql"]
-# list3 = [67, 89, 65]
-
-# lists = [list1, list2, list3]
-# df_of_res = np.array(pd.concat([pd.Series(x) for x in lists], axis=1)).T.tolist()
-# print(df_of_res)
-
-
-# In[10]:
-
-
-# convert the list into dataframe row by
-# using zip()
-# data = pd.DataFrame(list(zip(list1, list2, list3)),
-#                     columns=['student', 'subject', 'marks'])
- 
-# display(data)
-
-# df_pop = spark.sql('select * from population')
-# [c for c in set(df_pop.toPandas()['VIN'].unique()) if c not in tmp]
-# tmp = df_pop.toPandas()['VIN'].unique()
-
-# df = pd.DataFrame({'a': [1, 1, 2], 'b': ['a', 'b', 'c'], 'c': [4, 5, 6]})
-# # Normalize using Min/Max Normalization.
-
-# display(df)
-# df_num = df.select_dtypes(include='number')
-# # selected = [s for s in df.columns if 'a' in s]    #+['VIN']
-# # print(df_num.dtypes)
-# df_norm = (df_num - df_num.mean()) / (df_num.max() - df_num.min())
-
-# # df = df.toPandas()
-# df[df_norm.columns] = df_norm
-# display(df)
-
-# df = spark.sql('select * from p2457_faults LIMIT 10')
-# pandas_df = df.toPandas()
-# pandas_df = pandas_df.replace("NA", None)
-# pandas_df = pandas_df.replace(",", ".")
-# display(pandas_df)
-
-
-
-
-# statement_in_feature_name = 'ROAD_SPEED'
-# df_normalized = normalize_numeric_feature_values(statement_in_feature_name, pandas_df)
-# display(df_normalized)
 

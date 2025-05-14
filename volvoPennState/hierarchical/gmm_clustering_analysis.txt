@@ -1,0 +1,17 @@
+Finding the best number of components for GMM...
+Components=2, Silhouette Score=0.2018 
+Components=3, Silhouette Score=0.2059
+Components=4, Silhouette Score=0.2053 
+Components=5, Silhouette Score=0.1849 
+Components=6, Silhouette Score=0.1644
+Components=7, Silhouette Score=0.1505 
+Components=8, Silhouette Score=0.1593 
+Components=9, Silhouette Score=0.1499
+Components=10, Silhouette Score=0.1475
+Best Components for GMM: 3
+Best K: 3
+Cluster counts:
+Cluster 0: 20360 points
+Cluster 1: 184375 points
+Cluster 2: 117443 points
+Creating visualization PDF for GMM...All Done! ✅

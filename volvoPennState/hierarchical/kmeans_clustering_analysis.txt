@@ -1,0 +1,13 @@
+Finding the best K for KMeans...
+KMeans with 2 clusters K=2, Silhouette Score=0.1877
+KMeans with 3 clusters K=3, Silhouette Score=0.1792
+KMeans with 4 clusters K=4, Silhouette Score=0.2056
+KMeans with 5 clusters K=5, Silhouette Score=0.1850
+KMeans with 6 clusters K=6, Silhouette Score=0.1791
+KMeans with 7 clusters K=7, Silhouette Score=0.1760
+KMeans with 8 clusters K=8, Silhouette Score=0.1570
+KMeans with 9 clusters K=9, Silhouette Score=0.1505
+KMeans with 10 clusters K=10, Silhouette Score=0.1513
+Best K: 4
+
+Creating visualization PDF...Done! ✅
